@@ -22,6 +22,9 @@ final dataDirProvider = Provider<Directory>((ref) => throw UnimplementedError('d
 final settingsStoreProvider = Provider<SettingsStore>((ref) => MemorySettingsStore());
 final windowApiProvider = Provider<WindowApi>((ref) => const NoopWindowApi());
 
+/// Phones: long-press drags and menus, no hover or double-tap (Android sets it in main).
+final touchModeProvider = Provider<bool>((ref) => false);
+
 final projectRepoProvider = Provider((ref) => ProjectRepo(ref.watch(dbProvider)));
 final versionRepoProvider = Provider((ref) => VersionRepo(ref.watch(dbProvider)));
 final featureRepoProvider = Provider((ref) => FeatureRepo(ref.watch(dbProvider)));

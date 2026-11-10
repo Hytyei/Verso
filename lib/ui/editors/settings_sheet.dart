@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../state/providers.dart';
+import '../../update/update_controller.dart';
+import '../../version.dart';
 import '../glass/glass_surface.dart';
 import '../shell/glass_segmented.dart';
 import '../theme/palette.dart';
@@ -43,7 +45,7 @@ class _Settings extends ConsumerWidget {
     } catch (_) {}
     final label = TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w600, color: p.textSecondary);
     return SizedBox(
-      width: 420,
+      width: (MediaQuery.sizeOf(context).width - 24).clamp(280, 420).toDouble(),
 
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * .88),
@@ -95,7 +97,7 @@ class _Settings extends ConsumerWidget {
                             ),
                           ),
                           Text(
-                            'Crossfades instead of springs. Windows\' own setting is respected too.',
+                            'Crossfades instead of springs. The system setting is respected too.',
                             style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: p.textSecondary),
                           ),
                         ],
@@ -151,18 +153,16 @@ class _Settings extends ConsumerWidget {
                           style: TextStyle(fontFamily: 'Inter', fontSize: 12.5, color: p.text),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () => Process.run('explorer', [dir!.path]),
-                        child: const Text('Open folder'),
-                      ),
+                      if (Platform.isWindows)
+                        TextButton(
+                          onPressed: () => Process.run('explorer', [dir!.path]),
+                          child: const Text('Open folder'),
+                        ),
                     ],
                   ),
                 ],
-                const SizedBox(height: 8),
-                Text(
-                  'Verso 1.0.0 · data stays on this PC; Cloudflare sync comes later.',
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 11.5, color: p.textSecondary),
-                ),
+                const SizedBox(height: 12),
+                const _UpdateRow(),
               ],
             ),
           ),
@@ -201,6 +201,48 @@ class _SettingField extends StatelessWidget {
         ),
         onChanged: onSaved,
       ),
+    );
+  }
+}
+
+/// "Verso 1.4.0 · Up to date" with a Check for updates button.
+class _UpdateRow extends ConsumerWidget {
+  const _UpdateRow();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final p = VersoPalette.of(context);
+    final u = ref.watch(updateProvider);
+    final status = switch (u.phase) {
+      UpdatePhase.checking => 'Checking…',
+      UpdatePhase.upToDate => 'Up to date',
+      UpdatePhase.available || UpdatePhase.needsPermission => 'Verso ${u.info!.version} is available',
+      UpdatePhase.downloading => 'Downloading… ${(u.progress * 100).round()}%',
+      UpdatePhase.installing => 'Installing…',
+      UpdatePhase.failed => u.error ?? 'Update check failed',
+      UpdatePhase.idle => 'Updates come from GitHub releases',
+    };
+    final hasUpdate = u.info != null && u.phase != UpdatePhase.failed;
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            'Verso $appVersionName · $status',
+            key: const Key('update-status'),
+            style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: u.phase == UpdatePhase.failed ? p.coral : p.textSecondary),
+          ),
+        ),
+        TextButton(
+          key: const Key('check-updates'),
+          onPressed: u.phase == UpdatePhase.checking || u.phase == UpdatePhase.downloading
+              ? null
+              : () {
+                  final c = ref.read(updateProvider.notifier);
+                  hasUpdate ? c.update() : c.check();
+                },
+          child: Text(hasUpdate ? 'Update' : 'Check for updates'),
+        ),
+      ],
     );
   }
 }

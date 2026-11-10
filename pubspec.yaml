@@ -47,6 +47,8 @@ dependencies:
   pasteboard: ^0.6.0
   crypto: ^3.0.8
   ffi: ^2.2.0
+  image_picker: ^1.2.4
+  home_widget: ^0.10.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

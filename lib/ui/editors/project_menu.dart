@@ -1,3 +1,4 @@
+import 'prompt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -62,6 +63,14 @@ Future<void> showProjectMenu(BuildContext context, WidgetRef ref, Project projec
       ),
     ),
     MenuItemSpec('Tags…', icon: Icons.sell_outlined, onTap: () => showTagEditor(context, project.id, pos)),
+    MenuItemSpec(
+      'Rename…',
+      icon: Icons.edit_outlined,
+      onTap: () async {
+        final name = await promptText(context, title: 'Rename project', initial: project.name);
+        if (name != null && name != project.name) await repo.update(project.id, name: name);
+      },
+    ),
     const MenuItemSpec.divider(),
     MenuItemSpec(
       'Delete project',

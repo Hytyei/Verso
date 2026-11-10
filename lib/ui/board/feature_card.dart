@@ -74,11 +74,42 @@ class _FeatureCardState extends ConsumerState<FeatureCard> {
     super.dispose();
   }
 
-  void _dragStart(DragStartDetails d) {
+  void _dragStart(DragStartDetails d) => _startAt(d.globalPosition);
+
+  void _startAt(Offset global) {
     final drag = _drag;
     final box = context.findRenderObject() as RenderBox?;
     if (drag == null || box == null || _editing) return;
-    drag.start(widget.v, widget.version.id, d.globalPosition, box.localToGlobal(Offset.zero) & box.size);
+    drag.start(widget.v, widget.version.id, global, box.localToGlobal(Offset.zero) & box.size);
+  }
+
+  // Touch: a long-press lifts the card; moving drags it; letting go in place opens the menu.
+  Offset? _pressAt;
+  bool _moved = false;
+
+  void _longPressStart(LongPressStartDetails d) {
+    HapticFeedback.selectionClick();
+    _pressAt = d.globalPosition;
+    _moved = false;
+  }
+
+  void _longPressMove(LongPressMoveUpdateDetails d) {
+    if (!_moved && (d.globalPosition - _pressAt!).distance > 8) {
+      _moved = true;
+      _startAt(_pressAt!);
+    }
+    if (_moved) _drag?.update(d.globalPosition);
+  }
+
+  void _longPressEnd(LongPressEndDetails d) {
+    if (_moved) {
+      _dragEnd();
+    } else {
+      ref.read(focusedFeatureProvider.notifier).set(widget.v.id);
+      showFeatureMenu(context, ref, widget.v, widget.version, d.globalPosition);
+    }
+    _pressAt = null;
+    _moved = false;
   }
 
   Future<void> _dragEnd() async {
@@ -137,6 +168,7 @@ class _FeatureCardState extends ConsumerState<FeatureCard> {
       }
     });
     final expanded = ref.watch(expandedFeatureProvider.select((id) => id == v.id));
+    final touch = ref.watch(touchModeProvider);
     final checkColor = accent ?? p.primary;
     final cardColor = f.color != null
         ? Color.alphaBlend(
@@ -160,6 +192,13 @@ class _FeatureCardState extends ConsumerState<FeatureCard> {
               style: _titleStyle(p, false),
               decoration: const InputDecoration.collapsed(hintText: 'Feature'),
             ),
+          )
+        : touch && expanded
+        // On a phone, tapping the title of the open card edits it (no double-tap there).
+        ? GestureDetector(
+            key: Key('title-${v.id}'),
+            onTap: startEdit,
+            child: Text(f.title, style: _titleStyle(p, f.done)),
           )
         : Text(f.title, style: _titleStyle(p, f.done));
 
@@ -196,11 +235,15 @@ class _FeatureCardState extends ConsumerState<FeatureCard> {
           ref.read(focusedFeatureProvider.notifier).set(v.id);
           ref.read(expandedFeatureProvider.notifier).set(expanded ? null : v.id);
         },
-        onDoubleTap: startEdit,
-        onPanStart: _dragStart,
-        onPanUpdate: (d) => _drag?.update(d.globalPosition),
-        onPanEnd: (_) => _dragEnd(),
-        onPanCancel: () => _drag?.cancel(),
+        onDoubleTap: touch ? null : startEdit,
+        onPanStart: touch ? null : _dragStart,
+        onPanUpdate: touch ? null : (d) => _drag?.update(d.globalPosition),
+        onPanEnd: touch ? null : (_) => _dragEnd(),
+        onPanCancel: touch ? null : () => _drag?.cancel(),
+        onLongPressStart: touch ? _longPressStart : null,
+        onLongPressMoveUpdate: touch ? _longPressMove : null,
+        onLongPressEnd: touch ? _longPressEnd : null,
+        onLongPressCancel: touch ? () => _drag?.cancel() : null,
         onSecondaryTapUp: (d) {
           ref.read(focusedFeatureProvider.notifier).set(v.id);
           showFeatureMenu(context, ref, v, widget.version, d.globalPosition);

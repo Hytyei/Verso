@@ -37,14 +37,10 @@ class BoardView extends ConsumerStatefulWidget {
 
 class _BoardViewState extends ConsumerState<BoardView> {
   final _scroll = ScrollController();
-  final _drag = BoardDragController();
-  OverlayEntry? _ghost;
-  List<Version> _versions = const [];
 
   @override
   void initState() {
     super.initState();
-    _drag.addListener(_syncGhost);
     if (perfMode) _perfDrive();
   }
 
@@ -62,27 +58,8 @@ class _BoardViewState extends ConsumerState<BoardView> {
     }
   }
 
-  void _syncGhost() {
-    if (_drag.active && _ghost == null) {
-      final v = _drag.dragging!;
-      final version = _versions.where((x) => x.id == _drag.fromVersionId).firstOrNull;
-      if (version == null) return;
-      final names = {for (final x in _versions) x.id: x.name};
-      _ghost = OverlayEntry(
-        builder: (_) => _Ghost(controller: _drag, v: v, version: version, names: names),
-      );
-      Overlay.of(context, rootOverlay: true).insert(_ghost!);
-    } else if (!_drag.active && _ghost != null) {
-      _ghost!.remove();
-      _ghost = null;
-    }
-  }
-
   @override
   void dispose() {
-    _ghost?.remove();
-    _drag.removeListener(_syncGhost);
-    _drag.dispose();
     _scroll.dispose();
     super.dispose();
   }
@@ -94,12 +71,11 @@ class _BoardViewState extends ConsumerState<BoardView> {
     final versions = segmentOf(all, env);
     final prev = neighbourRun(all, env, before: true);
     final next = neighbourRun(all, env, before: false);
-    _versions = all;
     final names = {for (final v in all) v.id: v.name};
     final hooks = ref.watch(boardHooksProvider);
     final filter = hooks.filter?.call(ref);
-    return BoardDrag(
-      controller: _drag,
+    return BoardDragHost(
+      versions: all,
       child: Padding(
         padding: EdgeInsets.only(top: widget.topInset),
         child: Scrollbar(
@@ -138,6 +114,55 @@ class _BoardViewState extends ConsumerState<BoardView> {
       ),
     );
   }
+}
+
+/// Provides card dragging to the version columns below it, and shows the
+/// lifted card in the root overlay while a drag runs.
+class BoardDragHost extends StatefulWidget {
+  const BoardDragHost({super.key, required this.versions, required this.child});
+  final List<Version> versions;
+  final Widget child;
+
+  @override
+  State<BoardDragHost> createState() => _BoardDragHostState();
+}
+
+class _BoardDragHostState extends State<BoardDragHost> {
+  final _drag = BoardDragController();
+  OverlayEntry? _ghost;
+
+  @override
+  void initState() {
+    super.initState();
+    _drag.addListener(_syncGhost);
+  }
+
+  void _syncGhost() {
+    if (_drag.active && _ghost == null) {
+      final v = _drag.dragging!;
+      final version = widget.versions.where((x) => x.id == _drag.fromVersionId).firstOrNull;
+      if (version == null) return;
+      final names = {for (final x in widget.versions) x.id: x.name};
+      _ghost = OverlayEntry(
+        builder: (_) => _Ghost(controller: _drag, v: v, version: version, names: names),
+      );
+      Overlay.of(context, rootOverlay: true).insert(_ghost!);
+    } else if (!_drag.active && _ghost != null) {
+      _ghost!.remove();
+      _ghost = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _ghost?.remove();
+    _drag.removeListener(_syncGhost);
+    _drag.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => BoardDrag(controller: _drag, child: widget.child);
 }
 
 /// The lifted card following the pointer while dragging.

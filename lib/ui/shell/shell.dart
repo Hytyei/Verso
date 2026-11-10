@@ -1,3 +1,4 @@
+import '../common/update_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -87,6 +88,12 @@ class Shell extends ConsumerWidget {
                                           topInset: contentTopInset,
                                         ),
                                 ),
+                              ),
+                              Positioned(
+                                top: contentTopInset + 6,
+                                left: 0,
+                                right: 0,
+                                child: const Center(child: UpdateBanner()),
                               ),
                               Positioned(
                                 top: 0,

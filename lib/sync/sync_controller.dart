@@ -10,11 +10,20 @@ import 'sync_engine.dart';
 enum SyncPhase { off, idle, syncing, failed }
 
 class SyncStatus {
-  const SyncStatus(this.phase, {this.lastSynced, this.error});
+  const SyncStatus(this.phase, {this.lastSynced, this.error, this.pending = false});
   const SyncStatus.off() : this(SyncPhase.off);
   final SyncPhase phase;
   final DateTime? lastSynced;
   final String? error;
+
+  /// Local changes made since the last successful sync (not on the server yet).
+  final bool pending;
+
+  /// Fully synced: signed in, the last run succeeded and nothing new since.
+  bool get upToDate => phase == SyncPhase.idle && !pending && lastSynced != null;
+
+  SyncStatus copyWith({SyncPhase? phase, bool? pending}) =>
+      SyncStatus(phase ?? this.phase, lastSynced: lastSynced, error: error, pending: pending ?? this.pending);
 }
 
 /// Overridden in main() with the file store in the data folder.
@@ -44,6 +53,7 @@ class SyncController extends Notifier<SyncStatus> {
       _periodic = Timer.periodic(const Duration(minutes: 2), (_) => syncNow());
       _changes = ref.read(dbProvider).tableUpdates().listen((_) {
         if (_running) return; // our own pulled rows
+        if (!state.pending) state = state.copyWith(pending: true);
         _debounce?.cancel();
         _debounce = Timer(const Duration(seconds: 3), syncNow);
       });
@@ -69,7 +79,8 @@ class SyncController extends Notifier<SyncStatus> {
     }
     _running = true;
     final last = state.lastSynced;
-    state = SyncStatus(SyncPhase.syncing, lastSynced: last);
+    final pending = state.pending;
+    state = SyncStatus(SyncPhase.syncing, lastSynced: last, pending: pending);
     try {
       final engine = SyncEngine(
         db: ref.read(dbProvider),
@@ -80,9 +91,9 @@ class SyncController extends Notifier<SyncStatus> {
       await engine.run();
       state = SyncStatus(SyncPhase.idle, lastSynced: DateTime.now());
     } on SyncApiException catch (e) {
-      state = SyncStatus(SyncPhase.failed, lastSynced: last, error: e.message);
+      state = SyncStatus(SyncPhase.failed, lastSynced: last, error: e.message, pending: pending);
     } catch (e) {
-      state = SyncStatus(SyncPhase.failed, lastSynced: last, error: '$e');
+      state = SyncStatus(SyncPhase.failed, lastSynced: last, error: '$e', pending: pending);
     } finally {
       // Let the table-update events from our own writes pass before listening again.
       await Future<void>.delayed(const Duration(milliseconds: 50));

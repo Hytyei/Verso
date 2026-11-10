@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/db/database.dart';
@@ -16,7 +17,13 @@ import '../theme/palette.dart';
 /// Glass sidebar: environment folders holding projects (a project shows in
 /// every environment it has versions in), plus new-project / settings.
 class Sidebar extends ConsumerStatefulWidget {
-  const Sidebar({super.key, this.onOpenSettings, this.onProjectMenu, this.footer});
+  const Sidebar({super.key, this.onOpenSettings, this.onProjectMenu, this.footer, this.panelWidth, this.onOpened});
+
+  /// Overrides [Sidebar.width] (the phone sheet fills its width).
+  final double? panelWidth;
+
+  /// Called after a project is opened from the list (the phone closes its sheet).
+  final VoidCallback? onOpened;
   final VoidCallback? onOpenSettings;
 
   /// Right-click on a project (color, delete…); provided by the editors.
@@ -78,7 +85,10 @@ class _SidebarState extends ConsumerState<Sidebar> {
       key: ValueKey('${env.id}-${pr.id}'),
       project: pr,
       selected: pr.id == selected && env.id == selectedEnv,
-      onTap: () => openSegment(ref, pr.id, env.id),
+      onTap: () {
+        openSegment(ref, pr.id, env.id);
+        widget.onOpened?.call();
+      },
       onMenu: widget.onProjectMenu == null ? null : (pos) => widget.onProjectMenu!(context, pr, env.id, pos),
     );
     return [
@@ -134,7 +144,7 @@ class _SidebarState extends ConsumerState<Sidebar> {
       refract: false,
       radius: 22,
       child: SizedBox(
-        width: Sidebar.width,
+        width: widget.panelWidth ?? Sidebar.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -326,6 +336,7 @@ class _FolderRowState extends State<_FolderRow> {
             behavior: HitTestBehavior.opaque,
             onTap: widget.onTap,
             onSecondaryTapUp: (d) => widget.onMenu(d.globalPosition),
+            onLongPressStart: (d) => widget.onMenu(d.globalPosition),
             child: AnimatedContainer(
               duration: Motion.smoothDur(context),
               padding: const EdgeInsets.fromLTRB(6, 7, 6, 7),
@@ -435,8 +446,14 @@ class _ProjectTileState extends ConsumerState<_ProjectTile> {
       onExit: (_) => setState(() => _hover = false),
       child: GestureDetector(
         onTap: widget.onTap,
-        onDoubleTap: _startEdit,
+        onDoubleTap: ref.watch(touchModeProvider) ? null : _startEdit,
         onSecondaryTapUp: widget.onMenu == null ? null : (d) => widget.onMenu!(d.globalPosition),
+        onLongPressStart: widget.onMenu == null
+            ? null
+            : (d) {
+                HapticFeedback.selectionClick();
+                widget.onMenu!(d.globalPosition);
+              },
         child: AnimatedContainer(
           duration: Motion.smoothDur(context),
           curve: Motion.smooth,

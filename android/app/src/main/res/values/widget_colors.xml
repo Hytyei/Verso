@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light: the pastel palette (lib/ui/theme/palette.dart). -->
+    <color name="widget_bg_top">#EBFFFFFF</color>
+    <color name="widget_bg_bottom">#E0EEF2F8</color>
+    <color name="widget_rim">#FFFFFFFF</color>
+    <color name="widget_rim_soft">#33C9D3E1</color>
+    <color name="widget_text">#FF1E2A3B</color>
+    <color name="widget_text2">#FF6B7A90</color>
+    <color name="widget_track">#FFDDE3EC</color>
+    <color name="widget_accent_0">#FF3B82D6</color>
+    <color name="widget_accent_1">#FFE3AE36</color>
+    <color name="widget_accent_2">#FFE5675A</color>
+    <color name="widget_accent_3">#FF3E4C68</color>
+</resources>

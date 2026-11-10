@@ -7,6 +7,7 @@ import '../common/glass_menu.dart';
 import '../common/toast.dart';
 import '../theme/motion.dart';
 import '../theme/palette.dart';
+import 'sync_indicator.dart';
 
 /// Sidebar footer: "Sign in with Google", progress, or the signed-in account.
 class AccountArea extends ConsumerWidget {
@@ -136,24 +137,12 @@ class _SyncLine extends ConsumerWidget {
   const _SyncLine({required this.style});
   final TextStyle style;
 
-  static String _ago(DateTime t) {
-    final d = DateTime.now().difference(t);
-    if (d.inSeconds < 45) return 'just now';
-    if (d.inMinutes < 60) return '${d.inMinutes} min ago';
-    if (d.inHours < 24) return '${d.inHours} h ago';
-    return '${d.inDays} d ago';
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final p = VersoPalette.of(context);
     final s = ref.watch(syncProvider);
-    final (text, color) = switch (s.phase) {
-      SyncPhase.off => ('Sync off', p.textSecondary),
-      SyncPhase.syncing => ('Syncing…', p.textSecondary),
-      SyncPhase.idle => (s.lastSynced == null ? 'Ready to sync' : 'Synced · ${_ago(s.lastSynced!)}', p.textSecondary),
-      SyncPhase.failed => ('Sync failed: ${s.error ?? ''}', p.coral),
-    };
+    final text = syncLabel(s);
+    final color = s.phase == SyncPhase.failed ? p.coral : p.textSecondary;
     return Text(
       text,
       key: const Key('sync-status'),

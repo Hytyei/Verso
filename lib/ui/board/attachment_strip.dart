@@ -4,6 +4,7 @@ import 'package:desktop_drop/desktop_drop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show ProviderListenable;
+import 'package:image_picker/image_picker.dart';
 import 'package:pasteboard/pasteboard.dart';
 
 import '../../data/db/database.dart';
@@ -64,6 +65,13 @@ class _AttachmentStripState extends ConsumerState<AttachmentStrip> {
     final p = VersoPalette.of(context);
     final store = ref.watch(attachmentStoreProvider);
     final atts = ref.watch(_attachmentsProvider(widget.featureId)).value ?? const <Attachment>[];
+    final touch = ref.watch(touchModeProvider);
+    Future<void> remove(Attachment a) async {
+      final undo = ref.read(undoProvider);
+      final action = removeAttachmentAction(store, a.id);
+      await undo.run(action);
+      if (context.mounted) showToast(context, 'Image removed', onUndo: () => undo.undoIfTop(action));
+    }
     return DropTarget(
       onDragEntered: (_) => setState(() => _over = true),
       onDragExited: (_) => setState(() => _over = false),
@@ -87,14 +95,9 @@ class _AttachmentStripState extends ConsumerState<AttachmentStrip> {
             for (final a in atts)
               GestureDetector(
                 onTap: () => showLightbox(context, store.original(a)),
-                onSecondaryTap: () async {
-                  final undo = ref.read(undoProvider);
-                  final action = removeAttachmentAction(store, a.id);
-                  await undo.run(action);
-                  if (context.mounted) {
-                    showToast(context, 'Image removed', onUndo: () => undo.undoIfTop(action));
-                  }
-                },
+                onSecondaryTap: () => remove(a),
+                // Touch: long-press removes (undo in the toast).
+                onLongPress: touch ? () => remove(a) : null,
                 child: MouseRegion(
                   cursor: SystemMouseCursors.zoomIn,
                   child: ClipRRect(
@@ -110,13 +113,29 @@ class _AttachmentStripState extends ConsumerState<AttachmentStrip> {
                   ),
                 ),
               ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                atts.isEmpty ? 'Drop or paste images here' : 'Drop more',
-                style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: p.textSecondary),
+            if (touch)
+              TextButton.icon(
+                key: Key('add-photos-${widget.featureId}'),
+                onPressed: () async {
+                  try {
+                    final picked = await ImagePicker().pickMultiImage(requestFullMetadata: false);
+                    if (picked.isEmpty || !context.mounted) return;
+                    await handleDroppedFiles(context, ref.read, widget.featureId, [for (final x in picked) x.path]);
+                  } catch (_) {
+                    if (context.mounted) showToast(context, 'Photos could not be opened');
+                  }
+                },
+                icon: const Icon(Icons.add_photo_alternate_outlined, size: 18),
+                label: Text(atts.isEmpty ? 'Add photos' : 'More'),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  atts.isEmpty ? 'Drop or paste images here' : 'Drop more',
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: p.textSecondary),
+                ),
               ),
-            ),
           ],
         ),
       ),

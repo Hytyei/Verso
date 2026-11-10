@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Verso</string>
+    <string name="widget_current_label">Current version</string>
+    <string name="widget_current_desc">The active version of a project, its progress and next tasks. Tick them right here.</string>
+    <string name="widget_glance_label">Progress glance</string>
+    <string name="widget_glance_desc">A project\'s active version and its progress.</string>
+    <string name="widget_pick_project">Show which project?</string>
+    <string name="widget_follow_last">The last project I opened</string>
+    <string name="widget_empty_title">Verso</string>
+    <string name="widget_empty_body">Open Verso once to fill this widget.</string>
+    <string name="widget_all_done">Nothing open in this version.</string>
+    <string name="widget_tick">Mark done</string>
+</resources>

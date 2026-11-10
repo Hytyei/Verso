@@ -60,6 +60,7 @@ class VersionColumn extends ConsumerStatefulWidget {
     this.expandedBuilder,
     this.filter,
     this.width = 320,
+    this.bottomInset = 14,
   });
 
   final Version version;
@@ -68,6 +69,9 @@ class VersionColumn extends ConsumerStatefulWidget {
   final ExpandedBuilder? expandedBuilder;
   final FeatureFilterFn? filter;
   final double width;
+
+  /// Space below the last row (the phone's floating add bar sits there).
+  final double bottomInset;
 
   @override
   ConsumerState<VersionColumn> createState() => _VersionColumnState();
@@ -145,7 +149,7 @@ class _VersionColumnState extends ConsumerState<VersionColumn> {
             controller: _scroll,
             child: SingleChildScrollView(
               controller: _scroll,
-              padding: const EdgeInsets.fromLTRB(10, 2, 10, 14),
+              padding: EdgeInsets.fromLTRB(10, 2, 10, widget.bottomInset),
               child: SmoothWheel(
                 controller: _scroll,
                 axis: Axis.vertical,
@@ -224,6 +228,7 @@ class _HeaderDrag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (version.kind == 'concept') return child;
+    if (ProviderScope.containerOf(context, listen: false).read(touchModeProvider)) return child;
     final p = VersoPalette.of(context);
     return Draggable<Version>(
       data: version,

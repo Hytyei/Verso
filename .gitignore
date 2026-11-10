@@ -21,3 +21,4 @@ tool/google_client.env
 /*.dll
 /data/
 tool/todoist/map.json
+android/.kotlin/

@@ -1,3 +1,5 @@
+import '../../auth/auth_controller.dart';
+import 'sync_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -86,6 +88,12 @@ class Toolbar extends ConsumerWidget {
             ...leading,
             const Spacer(),
             ...trailing,
+            GlassSurface(
+              radius: 999,
+              padding: const EdgeInsets.all(4),
+              child: SyncIndicator(size: 26, onSignIn: () => ref.read(authProvider.notifier).signIn()),
+            ),
+            const SizedBox(width: 10),
             GlassSegmented<ViewMode>(
               items: const [(ViewMode.board, 'Board'), (ViewMode.timeline, 'Timeline')],
               value: mode,

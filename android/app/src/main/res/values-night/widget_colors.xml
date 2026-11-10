@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark: pure black with warm accents. -->
+    <color name="widget_bg_top">#F21A1612</color>
+    <color name="widget_bg_bottom">#F2000000</color>
+    <color name="widget_rim">#1FFFFFFF</color>
+    <color name="widget_rim_soft">#14FFFFFF</color>
+    <color name="widget_text">#FFF4EEE6</color>
+    <color name="widget_text2">#FFA39886</color>
+    <color name="widget_track">#FF2A251F</color>
+    <color name="widget_accent_0">#FFF5A524</color>
+    <color name="widget_accent_1">#FFFF7A59</color>
+    <color name="widget_accent_2">#FFF2668B</color>
+    <color name="widget_accent_3">#FFE2C08D</color>
+</resources>

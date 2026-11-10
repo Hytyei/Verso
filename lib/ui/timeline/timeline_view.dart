@@ -221,6 +221,7 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
   }
 
   void _onPanUpdate(DragUpdateDetails d) {
+    if (_pinching) return;
     switch (_mode) {
       case _DragMode.pan:
         _jumpTo(_scale!.panBy(d.delta.dx));
@@ -243,6 +244,47 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
         _preview = MapEntry(_dragTarget!.id, r);
         _repaint.value++;
     }
+  }
+
+  // ---- pinch (phones): two fingers zoom; one finger keeps panning / dragging bars ----
+
+  final _touches = <int, Offset>{};
+  double? _pinchDist;
+  bool get _pinching => _touches.length >= 2;
+
+  void _pointerDown(PointerDownEvent e) {
+    if (e.kind != PointerDeviceKind.touch) return;
+    _touches[e.pointer] = e.localPosition;
+    if (_touches.length == 2) {
+      // A second finger joined: drop any bar drag, start zooming.
+      _mode = _DragMode.none;
+      _dragTarget = null;
+      _preview = null;
+      _pinchDist = _spread();
+      _repaint.value++;
+    }
+  }
+
+  void _pointerMove(PointerMoveEvent e) {
+    if (!_touches.containsKey(e.pointer)) return;
+    _touches[e.pointer] = e.localPosition;
+    if (!_pinching) return;
+    final d = _spread();
+    final last = _pinchDist;
+    _pinchDist = d;
+    if (last == null || last < 1 || d < 1) return;
+    final pts = _touches.values.take(2).toList();
+    _jumpTo(_scale!.zoomAt(d / last, (pts[0].dx + pts[1].dx) / 2));
+  }
+
+  void _pointerUp(PointerEvent e) {
+    _touches.remove(e.pointer);
+    if (_touches.length < 2) _pinchDist = null;
+  }
+
+  double _spread() {
+    final pts = _touches.values.take(2).toList();
+    return (pts[0] - pts[1]).distance;
   }
 
   static DateTime _minDate(DateTime a, DateTime b) => a.isBefore(b) ? a : b;
@@ -453,6 +495,10 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
             Positioned.fill(
               child: Listener(
                 onPointerSignal: _onSignal,
+                onPointerDown: _pointerDown,
+                onPointerMove: _pointerMove,
+                onPointerUp: _pointerUp,
+                onPointerCancel: _pointerUp,
                 child: MouseRegion(
                   onHover: (e) {
                     final h = _geom?.hitTest(e.localPosition);

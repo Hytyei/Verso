@@ -122,7 +122,7 @@ class LoopbackServer {
         req.response.write(
           _page(
             ok ? 'Signed in to Verso' : 'Sign-in failed',
-            ok ? 'You can close this tab and return to Verso.' : 'Return to Verso and try again.',
+            ok ? (returnUrl == null ? 'You can close this tab and return to Verso.' : 'Returning to Verso…') : 'Return to Verso and try again.',
           ),
         );
         await req.response.close();
@@ -139,10 +139,22 @@ class LoopbackServer {
 
   Future<void> close() => _server.close(force: true);
 
-  static String _page(String title, String body) =>
-      '<!doctype html><meta charset="utf-8"><title>$title</title>'
-      '<body style="font-family:system-ui;background:#EEF2F8;color:#1E2A3B;display:grid;place-items:center;height:100vh;margin:0">'
-      '<div style="text-align:center"><h2>$title</h2><p>$body</p></div></body>';
+  /// Where the page sends the browser afterwards (Android: `verso://signed-in`,
+  /// which brings the app back to the front). Null on Windows.
+  static String? returnUrl;
+
+  static String _page(String title, String body) {
+    final back = returnUrl;
+    final extra = back == null
+        ? ''
+        : '<meta http-equiv="refresh" content="0;url=$back">'
+              '<p><a href="$back" style="display:inline-block;padding:12px 22px;border-radius:14px;'
+              'background:#1E2A3B;color:#fff;text-decoration:none">Back to Verso</a></p>';
+    return '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+        '<title>$title</title>'
+        '<body style="font-family:system-ui;background:#EEF2F8;color:#1E2A3B;display:grid;place-items:center;height:100vh;margin:0">'
+        '<div style="text-align:center"><h2>$title</h2><p>$body</p>$extra</div></body>';
+  }
 }
 
 class TokenResponse {

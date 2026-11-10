@@ -1,8 +1,17 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
+
+// Release signing: the key and its passwords live OUTSIDE the repo, in
+// D:\RandD\Android Apps\AndroidKeys\versoapp(.properties). VERSO_SIGNING can point elsewhere.
+val signingFile = file(
+    System.getenv("VERSO_SIGNING") ?: "D:/RandD/Android Apps/AndroidKeys/versoapp.properties"
+)
+val signing = Properties().apply { if (signingFile.exists()) signingFile.inputStream().use { load(it) } }
 
 android {
     namespace = "design.hadi.verso"
@@ -15,23 +24,39 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "design.hadi.verso"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // 26: adaptive icons, canRequestPackageInstalls() for the updater.
+        minSdk = maxOf(26, flutter.minSdkVersion)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+    signingConfigs {
+        create("release") {
+            if (signing.isNotEmpty()) {
+                storeFile = file(signing.getProperty("storeFile"))
+                storePassword = signing.getProperty("storePassword")
+                keyAlias = signing.getProperty("keyAlias")
+                keyPassword = signing.getProperty("keyPassword")
+            }
         }
     }
+
+    buildTypes {
+        debug {
+            // Installs beside the release app, so a debug build never blocks an update.
+            applicationIdSuffix = ".debug"
+        }
+        release {
+            signingConfig = if (signing.isNotEmpty()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
+        }
+    }
+}
+
+dependencies {
+    // FileProvider for the updater.
+    implementation("androidx.core:core-ktx:1.13.1")
 }
 
 kotlin {
