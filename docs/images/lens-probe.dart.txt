@@ -1,0 +1,83 @@
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+
+/// Skia-safe liquid glass: magnified backdrop inside, stronger magnification
+/// in a rim ring (edge lensing), specular rim and light tint.
+class LensGlass extends StatelessWidget {
+  const LensGlass({super.key, required this.child, this.radius = 30, this.dark = false});
+  final Widget child;
+  final double radius;
+  final bool dark;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, c) {
+      return Stack(children: [
+        Positioned.fill(child: _lensLayer(scale: 1.03, ring: null)),
+        Positioned.fill(child: _lensLayer(scale: 1.16, ring: 7)),
+        Positioned.fill(child: CustomPaint(painter: _RimPainter(radius, dark))),
+        child,
+      ]);
+    });
+  }
+
+  Widget _lensLayer({required double scale, double? ring}) {
+    return LayoutBuilder(builder: (context, c) {
+      final w = c.maxWidth, h = c.maxHeight;
+      final m = Matrix4.identity()
+        ..translate(w / 2, h / 2)
+        ..scale(scale, scale)
+        ..translate(-w / 2, -h / 2);
+      final filter = ui.ImageFilter.compose(
+        outer: ui.ImageFilter.blur(sigmaX: 0.6, sigmaY: 0.6),
+        inner: ui.ImageFilter.matrix(m.storage, filterQuality: FilterQuality.low),
+      );
+      return ClipPath(
+        clipper: _RingClipper(radius, ring),
+        child: BackdropFilter(filter: filter, child: const SizedBox.expand()),
+      );
+    });
+  }
+}
+
+class _RingClipper extends CustomClipper<Path> {
+  _RingClipper(this.radius, this.ring);
+  final double radius;
+  final double? ring;
+  @override
+  Path getClip(Size s) {
+    final outer = Path()..addRRect(RRect.fromRectAndRadius(Offset.zero & s, Radius.circular(radius)));
+    if (ring == null) return outer;
+    final inner = Path()
+      ..addRRect(RRect.fromRectAndRadius(
+          Rect.fromLTWH(ring!, ring!, s.width - 2 * ring!, s.height - 2 * ring!), Radius.circular((radius - ring!).clamp(0, 999))));
+    return Path.combine(PathOperation.difference, outer, inner);
+  }
+  @override
+  bool shouldReclip(_RingClipper o) => o.radius != radius || o.ring != ring;
+}
+
+class _RimPainter extends CustomPainter {
+  _RimPainter(this.radius, this.dark);
+  final double radius;
+  final bool dark;
+  @override
+  void paint(Canvas canvas, Size s) {
+    final r = RRect.fromRectAndRadius(Offset.zero & s, Radius.circular(radius));
+    canvas.drawRRect(r, Paint()..color = (dark ? const Color(0x14FFFFFF) : const Color(0x26FFFFFF)));
+    final shade = Paint()
+      ..shader = ui.Gradient.linear(Offset.zero, Offset(0, s.height), [
+        const Color(0x22FFFFFF), const Color(0x00FFFFFF), const Color(0x10000000)
+      ], [0, .5, 1]);
+    canvas.drawRRect(r, shade);
+    final rim = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2
+      ..shader = ui.Gradient.linear(Offset.zero, Offset(s.width, s.height), [
+        const Color(0xE6FFFFFF), const Color(0x33FFFFFF), const Color(0x11FFFFFF), const Color(0x99FFFFFF)
+      ], [0, .35, .65, 1]);
+    canvas.drawRRect(r.deflate(.6), rim);
+  }
+  @override
+  bool shouldRepaint(_RimPainter o) => false;
+}

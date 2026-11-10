@@ -1,0 +1,12 @@
+name = "verso-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "verso"
+database_id = "4733215d-66e1-4a32-89c4-643e29861374"
+
+[vars]
+# Google OAuth client IDs allowed as ID-token audiences (comma list): Verso desktop client.
+GOOGLE_CLIENT_ID = "146527205813-r1b7qf4ifhlit5dqn5t1o9henk9bg3g6.apps.googleusercontent.com"

@@ -1,0 +1,23 @@
+.superpowers/
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+**/ephemeral/
+android/.gradle/
+android/local.properties
+android/**/GeneratedPluginRegistrant.java
+android/key.properties
+flutter_*.log
+# Local Google OAuth client for release builds (never commit)
+tool/google_client.env
+# Runner copied to the version folder root by tool/release.ps1
+/verso.exe
+/*.dll
+/data/
+tool/todoist/map.json
