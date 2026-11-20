@@ -43,7 +43,13 @@ class EnvironmentRepo {
     return id;
   }
 
-  Future<void> update(String id, {String? name, String? icon, VColor? color}) =>
+  Future<void> update(
+    String id, {
+    String? name,
+    String? icon,
+    VColor? color,
+    Value<String?> description = const Value.absent(),
+  }) =>
       (db.update(db.environments)..where((t) => t.id.equals(id))).write(
         EnvironmentsCompanion(
           updatedAt: Value(db.now()),
@@ -51,6 +57,7 @@ class EnvironmentRepo {
           icon: icon == null ? const Value.absent() : Value(icon),
           color: color == null ? const Value.absent() : Value(color.value),
           colorCustom: color == null ? const Value.absent() : Value(color.custom),
+          description: description,
         ),
       );
 

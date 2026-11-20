@@ -5,7 +5,14 @@ import '../theme/palette.dart';
 
 /// A small glass dialog with one text field. Returns the trimmed text, or null
 /// when cancelled or left empty.
-Future<String?> promptText(BuildContext context, {required String title, String initial = '', String hint = ''}) {
+Future<String?> promptText(
+  BuildContext context, {
+  required String title,
+  String initial = '',
+  String hint = '',
+  bool multiline = false,
+  bool allowEmpty = false,
+}) {
   final ctrl = TextEditingController(text: initial)..selection = TextSelection(baseOffset: 0, extentOffset: initial.length);
   return showGeneralDialog<String>(
     context: context,
@@ -17,7 +24,7 @@ Future<String?> promptText(BuildContext context, {required String title, String 
       final p = VersoPalette.of(ctx);
       void done() {
         final t = ctrl.text.trim();
-        Navigator.pop(ctx, t.isEmpty ? null : t);
+        Navigator.pop(ctx, t.isEmpty && !allowEmpty ? null : t);
       }
 
       return Center(
@@ -41,8 +48,10 @@ Future<String?> promptText(BuildContext context, {required String title, String 
                       key: const Key('prompt-field'),
                       controller: ctrl,
                       autofocus: true,
-                      textInputAction: TextInputAction.done,
-                      onSubmitted: (_) => done(),
+                      minLines: multiline ? 3 : 1,
+                      maxLines: multiline ? 6 : 1,
+                      textInputAction: multiline ? TextInputAction.newline : TextInputAction.done,
+                      onSubmitted: multiline ? null : (_) => done(),
                       style: TextStyle(fontFamily: 'Inter', fontSize: 15, color: p.text),
                       decoration: InputDecoration(
                         isDense: true,

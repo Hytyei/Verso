@@ -15,6 +15,9 @@ class Settings {
     this.googleClientId = '',
     this.googleClientSecret = '',
     this.syncUrl = defaultSyncUrl,
+    this.stepsOnCards = true,
+    this.timelineAll = false,
+    this.overview = const OverviewFilter(),
   });
 
   final ThemeMode themeMode;
@@ -31,6 +34,15 @@ class Settings {
   final String syncUrl;
   static const defaultSyncUrl = 'https://verso-api.thehdv7.workers.dev';
 
+  /// Collapsed cards list their steps (v1.5.0).
+  final bool stepsOnCards;
+
+  /// The timeline shows every project instead of the open one (v1.5.0).
+  final bool timelineAll;
+
+  /// What the all-projects timeline hides.
+  final OverviewFilter overview;
+
   Settings copyWith({
     ThemeMode? themeMode,
     bool? reduceMotion,
@@ -40,6 +52,9 @@ class Settings {
     String? googleClientId,
     String? googleClientSecret,
     String? syncUrl,
+    bool? stepsOnCards,
+    bool? timelineAll,
+    OverviewFilter? overview,
   }) => Settings(
     themeMode: themeMode ?? this.themeMode,
     reduceMotion: reduceMotion ?? this.reduceMotion,
@@ -49,6 +64,9 @@ class Settings {
     googleClientId: googleClientId ?? this.googleClientId,
     googleClientSecret: googleClientSecret ?? this.googleClientSecret,
     syncUrl: syncUrl ?? this.syncUrl,
+    stepsOnCards: stepsOnCards ?? this.stepsOnCards,
+    timelineAll: timelineAll ?? this.timelineAll,
+    overview: overview ?? this.overview,
   );
 
   Map<String, Object?> toJson() => {
@@ -60,6 +78,9 @@ class Settings {
     'googleClientId': googleClientId,
     'googleClientSecret': googleClientSecret,
     'syncUrl': syncUrl,
+    'stepsOnCards': stepsOnCards,
+    'timelineAll': timelineAll,
+    'overview': overview.toJson(),
   };
 
   factory Settings.fromJson(Map<String, Object?> j) => Settings(
@@ -71,6 +92,53 @@ class Settings {
     googleClientId: (j['googleClientId'] as String?) ?? '',
     googleClientSecret: (j['googleClientSecret'] as String?) ?? '',
     syncUrl: (j['syncUrl'] as String?) ?? defaultSyncUrl,
+    stepsOnCards: j['stepsOnCards'] != false,
+    timelineAll: j['timelineAll'] == true,
+    overview: j['overview'] is Map ? OverviewFilter.fromJson((j['overview'] as Map).cast()) : const OverviewFilter(),
+  );
+}
+
+/// What the all-projects timeline hides. Stored as what is *hidden*, so new
+/// projects and environments show up without touching the filter.
+@immutable
+class OverviewFilter {
+  const OverviewFilter({
+    this.hiddenEnvironments = const {},
+    this.hiddenProjects = const {},
+    this.hideReleased = false,
+    this.hidePaused = true,
+  });
+  final Set<String> hiddenEnvironments;
+  final Set<String> hiddenProjects;
+  final bool hideReleased;
+  final bool hidePaused;
+
+  bool get isActive => hiddenEnvironments.isNotEmpty || hiddenProjects.isNotEmpty || hideReleased || !hidePaused;
+
+  OverviewFilter copyWith({
+    Set<String>? hiddenEnvironments,
+    Set<String>? hiddenProjects,
+    bool? hideReleased,
+    bool? hidePaused,
+  }) => OverviewFilter(
+    hiddenEnvironments: hiddenEnvironments ?? this.hiddenEnvironments,
+    hiddenProjects: hiddenProjects ?? this.hiddenProjects,
+    hideReleased: hideReleased ?? this.hideReleased,
+    hidePaused: hidePaused ?? this.hidePaused,
+  );
+
+  Map<String, Object?> toJson() => {
+    'hiddenEnvironments': hiddenEnvironments.toList(),
+    'hiddenProjects': hiddenProjects.toList(),
+    'hideReleased': hideReleased,
+    'hidePaused': hidePaused,
+  };
+
+  factory OverviewFilter.fromJson(Map<String, Object?> j) => OverviewFilter(
+    hiddenEnvironments: {...((j['hiddenEnvironments'] as List?) ?? const []).cast<String>()},
+    hiddenProjects: {...((j['hiddenProjects'] as List?) ?? const []).cast<String>()},
+    hideReleased: j['hideReleased'] == true,
+    hidePaused: j['hidePaused'] != false,
   );
 }
 

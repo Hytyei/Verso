@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'prompt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,6 +64,22 @@ Future<void> showProjectMenu(BuildContext context, WidgetRef ref, Project projec
       ),
     ),
     MenuItemSpec('Tags…', icon: Icons.sell_outlined, onTap: () => showTagEditor(context, project.id, pos)),
+    MenuItemSpec(
+      'Description…',
+      icon: Icons.notes_rounded,
+      onTap: () async {
+        final text = await promptText(
+          context,
+          title: 'Description of ${project.name}',
+          initial: project.description ?? '',
+          hint: 'What the app is (shown on hover)',
+          multiline: true,
+          allowEmpty: true,
+        );
+        if (text == null) return;
+        await repo.update(project.id, description: Value(text.isEmpty ? null : text));
+      },
+    ),
     MenuItemSpec(
       'Rename…',
       icon: Icons.edit_outlined,

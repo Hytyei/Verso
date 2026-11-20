@@ -58,7 +58,14 @@ class TimelineLayoutResult {
 /// The concept lane comes first; lane order otherwise follows [versions].
 class TimelineLayout {
   static TimelineLayoutResult build(List<Version> versions, List<Feature> dated, List<Milestone> milestones) {
-    final ordered = [...versions.where((v) => v.kind == 'concept'), ...versions.where((v) => v.kind != 'concept')];
+    // Grouped by project (first appearance), each project's Concept stage first.
+    final groups = <String, List<Version>>{};
+    for (final v in versions) {
+      (groups[v.projectId] ??= []).add(v);
+    }
+    final ordered = [
+      for (final g in groups.values) ...[...g.where((v) => v.kind == 'concept'), ...g.where((v) => v.kind != 'concept')],
+    ];
     final byVersion = <String, List<FeatureBar>>{};
     for (final f in dated) {
       final r = DateRange.of(f.startDate, f.endDate);

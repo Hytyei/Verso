@@ -22,6 +22,9 @@ class Projects extends Table with SyncColumns {
 
   /// "On Pause": shown faded in an On Pause subfolder of each environment.
   BoolColumn get paused => boolean().withDefault(const Constant(false))();
+
+  /// What the app is; shown on hover in the sidebar (schema 5).
+  TextColumn get description => text().nullable()();
 }
 
 /// Where development happens (Claude Code, ChatGPT…); a sidebar folder.
@@ -31,6 +34,9 @@ class Environments extends Table with SyncColumns {
 
   /// Built-in glyph key, or `file:<name>` for a custom image in the icons folder.
   TextColumn get icon => text().withDefault(const Constant('folder'))();
+
+  /// What the environment is; shown on hover in the sidebar (schema 5).
+  TextColumn get description => text().nullable()();
   IntColumn get color => integer().withDefault(const Constant(0))();
   BoolColumn get colorCustom => boolean().withDefault(const Constant(false))();
   TextColumn get sortKey => text()();
@@ -49,6 +55,11 @@ class Versions extends Table with SyncColumns {
   DateTimeColumn get targetDate => dateTime().nullable()();
   DateTimeColumn get releasedDate => dateTime().nullable()();
   TextColumn get description => text().nullable()();
+
+  /// True when [targetDate] was filled in automatically because every task got
+  /// done; it is cleared again if a task reopens (schema 5). Nullable so rows
+  /// from older builds, which lack it, still load.
+  BoolColumn get endAuto => boolean().nullable()();
   TextColumn get sortKey => text()();
 }
 

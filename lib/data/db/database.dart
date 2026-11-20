@@ -34,7 +34,7 @@ class VersoDb extends _$VersoDb {
   String newId() => _uuid.v4();
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -68,6 +68,15 @@ class VersoDb extends _$VersoDb {
         }
         if (!await _hasColumn('subitems', 'parent_id')) {
           await m.addColumn(subitems, subitems.parentId);
+        }
+        if (!await _hasColumn('projects', 'description')) {
+          await m.addColumn(projects, projects.description);
+        }
+        if (!await _hasColumn('environments', 'description')) {
+          await m.addColumn(environments, environments.description);
+        }
+        if (!await _hasColumn('versions', 'end_auto')) {
+          await m.addColumn(versions, versions.endAuto);
         }
       });
     },

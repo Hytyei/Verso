@@ -1,3 +1,4 @@
+import 'card_steps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -293,6 +294,12 @@ class _FeatureCardState extends ConsumerState<FeatureCard> {
                           ),
                         ],
                       ),
+                      // v1.5.0: steps show without opening the card (Settings can turn it off).
+                      if (!expanded && v.subTotal > 0 && ref.watch(settingsProvider.select((s) => s.stepsOnCards)))
+                        Padding(
+                          padding: const EdgeInsets.only(left: 32, top: 5),
+                          child: CardSteps(featureId: v.id, color: checkColor),
+                        ),
                       if (meta.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(left: 32, top: 7),

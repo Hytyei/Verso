@@ -426,10 +426,27 @@ class TimelinePainter extends CustomPainter {
 
 /// Lane names on the left (drawn over the glass label panel).
 class LaneLabelPainter extends CustomPainter {
-  LaneLabelPainter({required this.geometry, required this.palette, required this.progress});
+  LaneLabelPainter({
+    required this.geometry,
+    required this.palette,
+    required this.progress,
+    this.names = const {},
+    this.subs = const {},
+  });
   final TimelineGeometry geometry;
   final VersoPalette palette;
   final Map<String, double> progress;
+
+  /// Lane name per version id ("Tandem · v1.2"); the version name when absent.
+  final Map<String, String> names;
+
+  /// Extra text for the sub-line per version id (the environment).
+  final Map<String, String> subs;
+
+  static const nameStyle = TextStyle(fontFamily: 'Inter', fontSize: 13.5, fontWeight: FontWeight.w700);
+
+  /// Width a lane name may take in a label panel [panelWidth] wide.
+  static double nameWidth(double panelWidth) => panelWidth - 46;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -447,17 +464,20 @@ class LaneLabelPainter extends CustomPainter {
       );
       final name = TextPainter(
         text: TextSpan(
-          text: l.version.name,
-          style: TextStyle(fontFamily: 'Inter', fontSize: 13.5, fontWeight: FontWeight.w700, color: p.text),
+          text: names[l.version.id] ?? l.version.name,
+          style: nameStyle.copyWith(color: p.text),
         ),
         textDirection: TextDirection.ltr,
         maxLines: 1,
         ellipsis: '…',
-      )..layout(maxWidth: size.width - 46);
+      )..layout(maxWidth: nameWidth(size.width));
       name.paint(canvas, Offset(34, r.top + TimelineGeometry.lanePad + TimelineGeometry.barH / 2 - name.height / 2));
+      final extra = subs[l.version.id];
       final sub = l.isConcept
-          ? 'Concept design'
-          : '${((progress[l.version.id] ?? 0) * 100).round()}% done · ${l.features.length} dated';
+          ? (extra == null ? 'Concept design' : 'Concept · $extra')
+          : extra == null
+          ? '${((progress[l.version.id] ?? 0) * 100).round()}% done · ${l.features.length} dated'
+          : '${((progress[l.version.id] ?? 0) * 100).round()}% done · $extra';
       final st = TextPainter(
         text: TextSpan(
           text: sub,

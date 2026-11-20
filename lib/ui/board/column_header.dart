@@ -1,3 +1,4 @@
+import '../common/overflow_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,10 +40,10 @@ class ColumnHeader extends ConsumerWidget {
             children: [
               if (concept) ...[Icon(Icons.lightbulb_outline_rounded, size: 18, color: color), const SizedBox(width: 6)],
               Flexible(
-                child: Text(
+                child: OverflowText(
                   v.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  // The version's own description shows on hover too.
+                  detail: v.description,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 17,
@@ -93,10 +94,8 @@ class ColumnHeader extends ConsumerWidget {
               children: [
                 if (dates.isNotEmpty)
                   Flexible(
-                    child: Text(
+                    child: OverflowText(
                       dates,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontFamily: 'Inter', fontSize: 12.5, color: p.textSecondary),
                     ),
                   ),

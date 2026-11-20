@@ -1,3 +1,4 @@
+import '../common/overflow_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -357,10 +358,9 @@ class _FolderRowState extends State<_FolderRow> {
                   EnvIcon(env: widget.env, size: 20),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      widget.env.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    child: _NameWithDescription(
+                      name: widget.env.name,
+                      description: widget.env.description,
                       style: TextStyle(fontFamily: 'Inter', fontSize: 13.5, fontWeight: FontWeight.w700, color: p.text),
                     ),
                   ),
@@ -484,10 +484,9 @@ class _ProjectTileState extends ConsumerState<_ProjectTile> {
                         onSubmitted: (_) => _commit(),
                         onTapOutside: (_) => _commit(),
                       )
-                    : Text(
-                        pr.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    : _NameWithDescription(
+                        name: pr.name,
+                        description: pr.description,
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 14,
@@ -503,5 +502,36 @@ class _ProjectTileState extends ConsumerState<_ProjectTile> {
         ),
       ),
     );
+  }
+}
+
+/// A sidebar name: on hover the full name (when cut off) and the description.
+/// Phones have no hover, so there the description is a dimmer second line.
+class _NameWithDescription extends ConsumerWidget {
+  const _NameWithDescription({required this.name, required this.description, required this.style});
+  final String name;
+  final String? description;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final desc = (description ?? '').trim();
+    if (ref.watch(touchModeProvider) && desc.isNotEmpty) {
+      final p = VersoPalette.of(context);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: style),
+          Text(
+            desc,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontFamily: 'Inter', fontSize: 12, height: 1.25, color: p.textSecondary),
+          ),
+        ],
+      );
+    }
+    return OverflowText(name, style: style, detail: desc, longPressOnTouch: false);
   }
 }

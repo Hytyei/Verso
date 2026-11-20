@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 
+import '../auto_dates.dart';
 import '../db/database.dart';
 import '../models.dart';
 import 'ordering.dart';
@@ -22,6 +23,8 @@ class FeatureRepo {
   FeatureRepo(this.db);
   final VersoDb db;
 
+  late final _dates = AutoDates(db);
+
   Future<Feature> get(String id) => (db.select(db.features)..where((t) => t.id.equals(id))).getSingle();
 
   /// Live features: undone by sortKey, then done by doneAt.
@@ -42,6 +45,17 @@ class FeatureRepo {
         'WHERE v.project_id = ? AND v.deleted = 0 AND f.deleted = 0 '
         'AND (f.start_date IS NOT NULL OR f.end_date IS NOT NULL)',
         variables: [Variable.withString(projectId)],
+        readsFrom: {db.features, db.versions},
+      )
+      .watch()
+      .asyncMap((rows) => Future.wait(rows.map((r) => db.features.mapFromRow(r))));
+
+  /// Dated features of every project (the all-projects timeline).
+  Stream<List<Feature>> watchDatedAll() => db
+      .customSelect(
+        'SELECT f.* FROM features f JOIN versions v ON v.id = f.version_id '
+        'WHERE v.deleted = 0 AND f.deleted = 0 '
+        'AND (f.start_date IS NOT NULL OR f.end_date IS NOT NULL)',
         readsFrom: {db.features, db.versions},
       )
       .watch()
@@ -90,6 +104,7 @@ class FeatureRepo {
                 sortKey: placeKey(await _openOrdered(versionId), afterId: afterId),
               ),
             );
+        await _dates.refresh(versionId, added: true);
         return id;
       });
 
@@ -114,11 +129,15 @@ class FeatureRepo {
     ),
   );
 
-  Future<void> setDone(String id, bool done) => (db.update(db.features)..where((t) => t.id.equals(id))).write(
-    FeaturesCompanion(updatedAt: Value(db.now()), done: Value(done), doneAt: Value(done ? db.now() : null)),
-  );
+  Future<void> setDone(String id, bool done) => db.transaction(() async {
+    await (db.update(db.features)..where((t) => t.id.equals(id))).write(
+      FeaturesCompanion(updatedAt: Value(db.now()), done: Value(done), doneAt: Value(done ? db.now() : null)),
+    );
+    await _dates.refresh((await get(id)).versionId);
+  });
 
   Future<void> moveTo(String id, String versionId, {String? afterId, String? beforeId}) => db.transaction(() async {
+    final from = (await get(id)).versionId;
     final key = placeKey(
       await _openOrdered(versionId, excluding: id),
       afterId: afterId,
@@ -127,18 +146,29 @@ class FeatureRepo {
     await (db.update(db.features)..where((t) => t.id.equals(id))).write(
       FeaturesCompanion(versionId: Value(versionId), sortKey: Value(key), updatedAt: Value(db.now())),
     );
+    if (from != versionId) {
+      await _dates.refresh(from);
+      await _dates.refresh(versionId, added: true);
+    }
   });
 
   /// Raw restore used by undo: puts back exact version, key and delay history.
-  Future<void> restorePlacement(Feature f) => (db.update(db.features)..where((t) => t.id.equals(f.id))).write(
-    FeaturesCompanion(
-      versionId: Value(f.versionId),
-      sortKey: Value(f.sortKey),
-      delayedFromVersionId: Value(f.delayedFromVersionId),
-      delayCount: Value(f.delayCount),
-      updatedAt: Value(db.now()),
-    ),
-  );
+  Future<void> restorePlacement(Feature f) => db.transaction(() async {
+    final from = (await get(f.id)).versionId;
+    await (db.update(db.features)..where((t) => t.id.equals(f.id))).write(
+      FeaturesCompanion(
+        versionId: Value(f.versionId),
+        sortKey: Value(f.sortKey),
+        delayedFromVersionId: Value(f.delayedFromVersionId),
+        delayCount: Value(f.delayCount),
+        updatedAt: Value(db.now()),
+      ),
+    );
+    if (from != f.versionId) {
+      await _dates.refresh(from);
+      await _dates.refresh(f.versionId);
+    }
+  });
 
   /// The release version after the feature's version, or null.
   Future<Version?> nextVersionFor(String featureId) async {
@@ -171,13 +201,18 @@ class FeatureRepo {
         updatedAt: Value(db.now()),
       ),
     );
+    await _dates.refresh(f.versionId);
+    await _dates.refresh(target, added: true);
   });
 
   Future<void> softDelete(String id) => setDeleted(id, true);
 
-  Future<void> setDeleted(String id, bool deleted) => (db.update(
-    db.features,
-  )..where((t) => t.id.equals(id))).write(FeaturesCompanion(deleted: Value(deleted), updatedAt: Value(db.now())));
+  Future<void> setDeleted(String id, bool deleted) => db.transaction(() async {
+    await (db.update(
+      db.features,
+    )..where((t) => t.id.equals(id))).write(FeaturesCompanion(deleted: Value(deleted), updatedAt: Value(db.now())));
+    await _dates.refresh((await get(id)).versionId);
+  });
 
   // ---- sub-items ----
 

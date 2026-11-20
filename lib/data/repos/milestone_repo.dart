@@ -13,6 +13,12 @@ class MilestoneRepo {
             ..orderBy([(t) => OrderingTerm(expression: t.date)]))
           .watch();
 
+  Stream<List<Milestone>> watchAll() =>
+      (db.select(db.milestones)
+            ..where((t) => t.deleted.equals(false))
+            ..orderBy([(t) => OrderingTerm(expression: t.date)]))
+          .watch();
+
   Future<String> create(
     String projectId,
     String title,

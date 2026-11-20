@@ -17,7 +17,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -26,7 +28,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -35,7 +39,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -43,7 +49,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
@@ -65,7 +73,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _colorCustomMeta = const VerificationMeta('colorCustom');
+  static const VerificationMeta _colorCustomMeta = const VerificationMeta(
+    'colorCustom',
+  );
   @override
   late final GeneratedColumn<bool> colorCustom = GeneratedColumn<bool>(
     'color_custom',
@@ -73,7 +83,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("color_custom" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("color_custom" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   static const VerificationMeta _iconMeta = const VerificationMeta('icon');
@@ -85,7 +97,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -94,7 +108,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _archivedMeta = const VerificationMeta('archived');
+  static const VerificationMeta _archivedMeta = const VerificationMeta(
+    'archived',
+  );
   @override
   late final GeneratedColumn<bool> archived = GeneratedColumn<bool>(
     'archived',
@@ -102,7 +118,9 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("archived" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("archived" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   static const VerificationMeta _pausedMeta = const VerificationMeta('paused');
@@ -113,8 +131,21 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("paused" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("paused" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -129,6 +160,7 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
     sortKey,
     archived,
     paused,
+    description,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -136,7 +168,10 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   String get actualTableName => $name;
   static const String $name = 'projects';
   @override
-  VerificationContext validateIntegrity(Insertable<Project> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Project> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -145,42 +180,84 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('color')) {
-      context.handle(_colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     }
     if (data.containsKey('color_custom')) {
-      context.handle(_colorCustomMeta, colorCustom.isAcceptableOrUnknown(data['color_custom']!, _colorCustomMeta));
+      context.handle(
+        _colorCustomMeta,
+        colorCustom.isAcceptableOrUnknown(
+          data['color_custom']!,
+          _colorCustomMeta,
+        ),
+      );
     }
     if (data.containsKey('icon')) {
-      context.handle(_iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
+      context.handle(
+        _iconMeta,
+        icon.isAcceptableOrUnknown(data['icon']!, _iconMeta),
+      );
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
     if (data.containsKey('archived')) {
-      context.handle(_archivedMeta, archived.isAcceptableOrUnknown(data['archived']!, _archivedMeta));
+      context.handle(
+        _archivedMeta,
+        archived.isAcceptableOrUnknown(data['archived']!, _archivedMeta),
+      );
     }
     if (data.containsKey('paused')) {
-      context.handle(_pausedMeta, paused.isAcceptableOrUnknown(data['paused']!, _pausedMeta));
+      context.handle(
+        _pausedMeta,
+        paused.isAcceptableOrUnknown(data['paused']!, _pausedMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
     }
     return context;
   }
@@ -191,17 +268,54 @@ class $ProjectsTable extends Projects with TableInfo<$ProjectsTable, Project> {
   Project map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Project(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      name: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      color: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      colorCustom: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}color_custom'])!,
-      icon: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}icon']),
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
-      archived: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}archived'])!,
-      paused: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}paused'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      colorCustom: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}color_custom'],
+      )!,
+      icon: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}icon'],
+      ),
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
+      archived: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}archived'],
+      )!,
+      paused: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}paused'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
     );
   }
 
@@ -225,6 +339,9 @@ class Project extends DataClass implements Insertable<Project> {
 
   /// "On Pause": shown faded in an On Pause subfolder of each environment.
   final bool paused;
+
+  /// What the app is; shown on hover in the sidebar (schema 5).
+  final String? description;
   const Project({
     required this.id,
     required this.createdAt,
@@ -237,6 +354,7 @@ class Project extends DataClass implements Insertable<Project> {
     required this.sortKey,
     required this.archived,
     required this.paused,
+    this.description,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -254,6 +372,9 @@ class Project extends DataClass implements Insertable<Project> {
     map['sort_key'] = Variable<String>(sortKey);
     map['archived'] = Variable<bool>(archived);
     map['paused'] = Variable<bool>(paused);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
     return map;
   }
 
@@ -270,10 +391,16 @@ class Project extends DataClass implements Insertable<Project> {
       sortKey: Value(sortKey),
       archived: Value(archived),
       paused: Value(paused),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
     );
   }
 
-  factory Project.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Project.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Project(
       id: serializer.fromJson<String>(json['id']),
@@ -287,6 +414,7 @@ class Project extends DataClass implements Insertable<Project> {
       sortKey: serializer.fromJson<String>(json['sortKey']),
       archived: serializer.fromJson<bool>(json['archived']),
       paused: serializer.fromJson<bool>(json['paused']),
+      description: serializer.fromJson<String?>(json['description']),
     );
   }
   @override
@@ -304,6 +432,7 @@ class Project extends DataClass implements Insertable<Project> {
       'sortKey': serializer.toJson<String>(sortKey),
       'archived': serializer.toJson<bool>(archived),
       'paused': serializer.toJson<bool>(paused),
+      'description': serializer.toJson<String?>(description),
     };
   }
 
@@ -319,6 +448,7 @@ class Project extends DataClass implements Insertable<Project> {
     String? sortKey,
     bool? archived,
     bool? paused,
+    Value<String?> description = const Value.absent(),
   }) => Project(
     id: id ?? this.id,
     createdAt: createdAt ?? this.createdAt,
@@ -331,6 +461,7 @@ class Project extends DataClass implements Insertable<Project> {
     sortKey: sortKey ?? this.sortKey,
     archived: archived ?? this.archived,
     paused: paused ?? this.paused,
+    description: description.present ? description.value : this.description,
   );
   Project copyWithCompanion(ProjectsCompanion data) {
     return Project(
@@ -340,11 +471,16 @@ class Project extends DataClass implements Insertable<Project> {
       deleted: data.deleted.present ? data.deleted.value : this.deleted,
       name: data.name.present ? data.name.value : this.name,
       color: data.color.present ? data.color.value : this.color,
-      colorCustom: data.colorCustom.present ? data.colorCustom.value : this.colorCustom,
+      colorCustom: data.colorCustom.present
+          ? data.colorCustom.value
+          : this.colorCustom,
       icon: data.icon.present ? data.icon.value : this.icon,
       sortKey: data.sortKey.present ? data.sortKey.value : this.sortKey,
       archived: data.archived.present ? data.archived.value : this.archived,
       paused: data.paused.present ? data.paused.value : this.paused,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
     );
   }
 
@@ -361,14 +497,27 @@ class Project extends DataClass implements Insertable<Project> {
           ..write('icon: $icon, ')
           ..write('sortKey: $sortKey, ')
           ..write('archived: $archived, ')
-          ..write('paused: $paused')
+          ..write('paused: $paused, ')
+          ..write('description: $description')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, createdAt, updatedAt, deleted, name, color, colorCustom, icon, sortKey, archived, paused);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    name,
+    color,
+    colorCustom,
+    icon,
+    sortKey,
+    archived,
+    paused,
+    description,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -383,7 +532,8 @@ class Project extends DataClass implements Insertable<Project> {
           other.icon == this.icon &&
           other.sortKey == this.sortKey &&
           other.archived == this.archived &&
-          other.paused == this.paused);
+          other.paused == this.paused &&
+          other.description == this.description);
 }
 
 class ProjectsCompanion extends UpdateCompanion<Project> {
@@ -398,6 +548,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
   final Value<String> sortKey;
   final Value<bool> archived;
   final Value<bool> paused;
+  final Value<String?> description;
   final Value<int> rowid;
   const ProjectsCompanion({
     this.id = const Value.absent(),
@@ -411,6 +562,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     this.sortKey = const Value.absent(),
     this.archived = const Value.absent(),
     this.paused = const Value.absent(),
+    this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProjectsCompanion.insert({
@@ -425,6 +577,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     required String sortKey,
     this.archived = const Value.absent(),
     this.paused = const Value.absent(),
+    this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        createdAt = Value(createdAt),
@@ -443,6 +596,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     Expression<String>? sortKey,
     Expression<bool>? archived,
     Expression<bool>? paused,
+    Expression<String>? description,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -457,6 +611,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
       if (sortKey != null) 'sort_key': sortKey,
       if (archived != null) 'archived': archived,
       if (paused != null) 'paused': paused,
+      if (description != null) 'description': description,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -473,6 +628,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     Value<String>? sortKey,
     Value<bool>? archived,
     Value<bool>? paused,
+    Value<String?>? description,
     Value<int>? rowid,
   }) {
     return ProjectsCompanion(
@@ -487,6 +643,7 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
       sortKey: sortKey ?? this.sortKey,
       archived: archived ?? this.archived,
       paused: paused ?? this.paused,
+      description: description ?? this.description,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -527,6 +684,9 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
     if (paused.present) {
       map['paused'] = Variable<bool>(paused.value);
     }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -547,13 +707,15 @@ class ProjectsCompanion extends UpdateCompanion<Project> {
           ..write('sortKey: $sortKey, ')
           ..write('archived: $archived, ')
           ..write('paused: $paused, ')
+          ..write('description: $description, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable, Environment> {
+class $EnvironmentsTable extends Environments
+    with TableInfo<$EnvironmentsTable, Environment> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -567,7 +729,9 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -576,7 +740,9 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -585,7 +751,9 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -593,7 +761,9 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
@@ -615,6 +785,17 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     requiredDuringInsert: false,
     defaultValue: const Constant('folder'),
   );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<int> color = GeneratedColumn<int>(
@@ -625,7 +806,9 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _colorCustomMeta = const VerificationMeta('colorCustom');
+  static const VerificationMeta _colorCustomMeta = const VerificationMeta(
+    'colorCustom',
+  );
   @override
   late final GeneratedColumn<bool> colorCustom = GeneratedColumn<bool>(
     'color_custom',
@@ -633,10 +816,14 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("color_custom" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("color_custom" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -646,14 +833,28 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, createdAt, updatedAt, deleted, name, icon, color, colorCustom, sortKey];
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    name,
+    icon,
+    description,
+    color,
+    colorCustom,
+    sortKey,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'environments';
   @override
-  VerificationContext validateIntegrity(Insertable<Environment> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Environment> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -662,34 +863,70 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('icon')) {
-      context.handle(_iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
+      context.handle(
+        _iconMeta,
+        icon.isAcceptableOrUnknown(data['icon']!, _iconMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
     }
     if (data.containsKey('color')) {
-      context.handle(_colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     }
     if (data.containsKey('color_custom')) {
-      context.handle(_colorCustomMeta, colorCustom.isAcceptableOrUnknown(data['color_custom']!, _colorCustomMeta));
+      context.handle(
+        _colorCustomMeta,
+        colorCustom.isAcceptableOrUnknown(
+          data['color_custom']!,
+          _colorCustomMeta,
+        ),
+      );
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
@@ -702,15 +939,46 @@ class $EnvironmentsTable extends Environments with TableInfo<$EnvironmentsTable,
   Environment map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Environment(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      name: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      icon: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}icon'])!,
-      color: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      colorCustom: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}color_custom'])!,
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      icon: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}icon'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      colorCustom: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}color_custom'],
+      )!,
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
     );
   }
 
@@ -729,6 +997,9 @@ class Environment extends DataClass implements Insertable<Environment> {
 
   /// Built-in glyph key, or `file:<name>` for a custom image in the icons folder.
   final String icon;
+
+  /// What the environment is; shown on hover in the sidebar (schema 5).
+  final String? description;
   final int color;
   final bool colorCustom;
   final String sortKey;
@@ -739,6 +1010,7 @@ class Environment extends DataClass implements Insertable<Environment> {
     required this.deleted,
     required this.name,
     required this.icon,
+    this.description,
     required this.color,
     required this.colorCustom,
     required this.sortKey,
@@ -752,6 +1024,9 @@ class Environment extends DataClass implements Insertable<Environment> {
     map['deleted'] = Variable<bool>(deleted);
     map['name'] = Variable<String>(name);
     map['icon'] = Variable<String>(icon);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
     map['color'] = Variable<int>(color);
     map['color_custom'] = Variable<bool>(colorCustom);
     map['sort_key'] = Variable<String>(sortKey);
@@ -766,13 +1041,19 @@ class Environment extends DataClass implements Insertable<Environment> {
       deleted: Value(deleted),
       name: Value(name),
       icon: Value(icon),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
       color: Value(color),
       colorCustom: Value(colorCustom),
       sortKey: Value(sortKey),
     );
   }
 
-  factory Environment.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Environment.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Environment(
       id: serializer.fromJson<String>(json['id']),
@@ -781,6 +1062,7 @@ class Environment extends DataClass implements Insertable<Environment> {
       deleted: serializer.fromJson<bool>(json['deleted']),
       name: serializer.fromJson<String>(json['name']),
       icon: serializer.fromJson<String>(json['icon']),
+      description: serializer.fromJson<String?>(json['description']),
       color: serializer.fromJson<int>(json['color']),
       colorCustom: serializer.fromJson<bool>(json['colorCustom']),
       sortKey: serializer.fromJson<String>(json['sortKey']),
@@ -796,6 +1078,7 @@ class Environment extends DataClass implements Insertable<Environment> {
       'deleted': serializer.toJson<bool>(deleted),
       'name': serializer.toJson<String>(name),
       'icon': serializer.toJson<String>(icon),
+      'description': serializer.toJson<String?>(description),
       'color': serializer.toJson<int>(color),
       'colorCustom': serializer.toJson<bool>(colorCustom),
       'sortKey': serializer.toJson<String>(sortKey),
@@ -809,6 +1092,7 @@ class Environment extends DataClass implements Insertable<Environment> {
     bool? deleted,
     String? name,
     String? icon,
+    Value<String?> description = const Value.absent(),
     int? color,
     bool? colorCustom,
     String? sortKey,
@@ -819,6 +1103,7 @@ class Environment extends DataClass implements Insertable<Environment> {
     deleted: deleted ?? this.deleted,
     name: name ?? this.name,
     icon: icon ?? this.icon,
+    description: description.present ? description.value : this.description,
     color: color ?? this.color,
     colorCustom: colorCustom ?? this.colorCustom,
     sortKey: sortKey ?? this.sortKey,
@@ -831,8 +1116,13 @@ class Environment extends DataClass implements Insertable<Environment> {
       deleted: data.deleted.present ? data.deleted.value : this.deleted,
       name: data.name.present ? data.name.value : this.name,
       icon: data.icon.present ? data.icon.value : this.icon,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
       color: data.color.present ? data.color.value : this.color,
-      colorCustom: data.colorCustom.present ? data.colorCustom.value : this.colorCustom,
+      colorCustom: data.colorCustom.present
+          ? data.colorCustom.value
+          : this.colorCustom,
       sortKey: data.sortKey.present ? data.sortKey.value : this.sortKey,
     );
   }
@@ -846,6 +1136,7 @@ class Environment extends DataClass implements Insertable<Environment> {
           ..write('deleted: $deleted, ')
           ..write('name: $name, ')
           ..write('icon: $icon, ')
+          ..write('description: $description, ')
           ..write('color: $color, ')
           ..write('colorCustom: $colorCustom, ')
           ..write('sortKey: $sortKey')
@@ -854,7 +1145,18 @@ class Environment extends DataClass implements Insertable<Environment> {
   }
 
   @override
-  int get hashCode => Object.hash(id, createdAt, updatedAt, deleted, name, icon, color, colorCustom, sortKey);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    name,
+    icon,
+    description,
+    color,
+    colorCustom,
+    sortKey,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -865,6 +1167,7 @@ class Environment extends DataClass implements Insertable<Environment> {
           other.deleted == this.deleted &&
           other.name == this.name &&
           other.icon == this.icon &&
+          other.description == this.description &&
           other.color == this.color &&
           other.colorCustom == this.colorCustom &&
           other.sortKey == this.sortKey);
@@ -877,6 +1180,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
   final Value<bool> deleted;
   final Value<String> name;
   final Value<String> icon;
+  final Value<String?> description;
   final Value<int> color;
   final Value<bool> colorCustom;
   final Value<String> sortKey;
@@ -888,6 +1192,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
     this.deleted = const Value.absent(),
     this.name = const Value.absent(),
     this.icon = const Value.absent(),
+    this.description = const Value.absent(),
     this.color = const Value.absent(),
     this.colorCustom = const Value.absent(),
     this.sortKey = const Value.absent(),
@@ -900,6 +1205,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
     this.deleted = const Value.absent(),
     required String name,
     this.icon = const Value.absent(),
+    this.description = const Value.absent(),
     this.color = const Value.absent(),
     this.colorCustom = const Value.absent(),
     required String sortKey,
@@ -916,6 +1222,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
     Expression<bool>? deleted,
     Expression<String>? name,
     Expression<String>? icon,
+    Expression<String>? description,
     Expression<int>? color,
     Expression<bool>? colorCustom,
     Expression<String>? sortKey,
@@ -928,6 +1235,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
       if (deleted != null) 'deleted': deleted,
       if (name != null) 'name': name,
       if (icon != null) 'icon': icon,
+      if (description != null) 'description': description,
       if (color != null) 'color': color,
       if (colorCustom != null) 'color_custom': colorCustom,
       if (sortKey != null) 'sort_key': sortKey,
@@ -942,6 +1250,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
     Value<bool>? deleted,
     Value<String>? name,
     Value<String>? icon,
+    Value<String?>? description,
     Value<int>? color,
     Value<bool>? colorCustom,
     Value<String>? sortKey,
@@ -954,6 +1263,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
       deleted: deleted ?? this.deleted,
       name: name ?? this.name,
       icon: icon ?? this.icon,
+      description: description ?? this.description,
       color: color ?? this.color,
       colorCustom: colorCustom ?? this.colorCustom,
       sortKey: sortKey ?? this.sortKey,
@@ -982,6 +1292,9 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
     if (icon.present) {
       map['icon'] = Variable<String>(icon.value);
     }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
     if (color.present) {
       map['color'] = Variable<int>(color.value);
     }
@@ -1006,6 +1319,7 @@ class EnvironmentsCompanion extends UpdateCompanion<Environment> {
           ..write('deleted: $deleted, ')
           ..write('name: $name, ')
           ..write('icon: $icon, ')
+          ..write('description: $description, ')
           ..write('color: $color, ')
           ..write('colorCustom: $colorCustom, ')
           ..write('sortKey: $sortKey, ')
@@ -1029,7 +1343,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -1038,7 +1354,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -1047,7 +1365,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -1055,10 +1375,14 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _projectIdMeta = const VerificationMeta('projectId');
+  static const VerificationMeta _projectIdMeta = const VerificationMeta(
+    'projectId',
+  );
   @override
   late final GeneratedColumn<String> projectId = GeneratedColumn<String>(
     'project_id',
@@ -1067,7 +1391,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _environmentIdMeta = const VerificationMeta('environmentId');
+  static const VerificationMeta _environmentIdMeta = const VerificationMeta(
+    'environmentId',
+  );
   @override
   late final GeneratedColumn<String> environmentId = GeneratedColumn<String>(
     'environment_id',
@@ -1115,7 +1441,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _colorCustomMeta = const VerificationMeta('colorCustom');
+  static const VerificationMeta _colorCustomMeta = const VerificationMeta(
+    'colorCustom',
+  );
   @override
   late final GeneratedColumn<bool> colorCustom = GeneratedColumn<bool>(
     'color_custom',
@@ -1123,10 +1451,14 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("color_custom" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("color_custom" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _startDateMeta = const VerificationMeta('startDate');
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
   @override
   late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
     'start_date',
@@ -1135,7 +1467,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _targetDateMeta = const VerificationMeta('targetDate');
+  static const VerificationMeta _targetDateMeta = const VerificationMeta(
+    'targetDate',
+  );
   @override
   late final GeneratedColumn<DateTime> targetDate = GeneratedColumn<DateTime>(
     'target_date',
@@ -1144,7 +1478,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _releasedDateMeta = const VerificationMeta('releasedDate');
+  static const VerificationMeta _releasedDateMeta = const VerificationMeta(
+    'releasedDate',
+  );
   @override
   late final GeneratedColumn<DateTime> releasedDate = GeneratedColumn<DateTime>(
     'released_date',
@@ -1153,7 +1489,9 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _descriptionMeta = const VerificationMeta('description');
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
   @override
   late final GeneratedColumn<String> description = GeneratedColumn<String>(
     'description',
@@ -1162,7 +1500,23 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _endAutoMeta = const VerificationMeta(
+    'endAuto',
+  );
+  @override
+  late final GeneratedColumn<bool> endAuto = GeneratedColumn<bool>(
+    'end_auto',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("end_auto" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -1188,6 +1542,7 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
     targetDate,
     releasedDate,
     description,
+    endAuto,
     sortKey,
   ];
   @override
@@ -1196,7 +1551,10 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
   String get actualTableName => $name;
   static const String $name = 'versions';
   @override
-  VerificationContext validateIntegrity(Insertable<Version> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Version> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1205,60 +1563,120 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('project_id')) {
-      context.handle(_projectIdMeta, projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
+      context.handle(
+        _projectIdMeta,
+        projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_projectIdMeta);
     }
     if (data.containsKey('environment_id')) {
       context.handle(
         _environmentIdMeta,
-        environmentId.isAcceptableOrUnknown(data['environment_id']!, _environmentIdMeta),
+        environmentId.isAcceptableOrUnknown(
+          data['environment_id']!,
+          _environmentIdMeta,
+        ),
       );
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('status')) {
-      context.handle(_statusMeta, status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
     }
     if (data.containsKey('color')) {
-      context.handle(_colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     }
     if (data.containsKey('color_custom')) {
-      context.handle(_colorCustomMeta, colorCustom.isAcceptableOrUnknown(data['color_custom']!, _colorCustomMeta));
+      context.handle(
+        _colorCustomMeta,
+        colorCustom.isAcceptableOrUnknown(
+          data['color_custom']!,
+          _colorCustomMeta,
+        ),
+      );
     }
     if (data.containsKey('start_date')) {
-      context.handle(_startDateMeta, startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
     }
     if (data.containsKey('target_date')) {
-      context.handle(_targetDateMeta, targetDate.isAcceptableOrUnknown(data['target_date']!, _targetDateMeta));
+      context.handle(
+        _targetDateMeta,
+        targetDate.isAcceptableOrUnknown(data['target_date']!, _targetDateMeta),
+      );
     }
     if (data.containsKey('released_date')) {
-      context.handle(_releasedDateMeta, releasedDate.isAcceptableOrUnknown(data['released_date']!, _releasedDateMeta));
+      context.handle(
+        _releasedDateMeta,
+        releasedDate.isAcceptableOrUnknown(
+          data['released_date']!,
+          _releasedDateMeta,
+        ),
+      );
     }
     if (data.containsKey('description')) {
-      context.handle(_descriptionMeta, description.isAcceptableOrUnknown(data['description']!, _descriptionMeta));
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('end_auto')) {
+      context.handle(
+        _endAutoMeta,
+        endAuto.isAcceptableOrUnknown(data['end_auto']!, _endAutoMeta),
+      );
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
@@ -1271,22 +1689,74 @@ class $VersionsTable extends Versions with TableInfo<$VersionsTable, Version> {
   Version map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Version(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      projectId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}project_id'])!,
-      environmentId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}environment_id']),
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
-      name: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      status: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}status'])!,
-      color: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      colorCustom: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}color_custom'])!,
-      startDate: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}start_date']),
-      targetDate: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}target_date']),
-      releasedDate: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}released_date']),
-      description: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}description']),
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      projectId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}project_id'],
+      )!,
+      environmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}environment_id'],
+      ),
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      colorCustom: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}color_custom'],
+      )!,
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_date'],
+      ),
+      targetDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}target_date'],
+      ),
+      releasedDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}released_date'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      endAuto: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}end_auto'],
+      ),
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
     );
   }
 
@@ -1312,6 +1782,11 @@ class Version extends DataClass implements Insertable<Version> {
   final DateTime? targetDate;
   final DateTime? releasedDate;
   final String? description;
+
+  /// True when [targetDate] was filled in automatically because every task got
+  /// done; it is cleared again if a task reopens (schema 5). Nullable so rows
+  /// from older builds, which lack it, still load.
+  final bool? endAuto;
   final String sortKey;
   const Version({
     required this.id,
@@ -1329,6 +1804,7 @@ class Version extends DataClass implements Insertable<Version> {
     this.targetDate,
     this.releasedDate,
     this.description,
+    this.endAuto,
     required this.sortKey,
   });
   @override
@@ -1359,6 +1835,9 @@ class Version extends DataClass implements Insertable<Version> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
+    if (!nullToAbsent || endAuto != null) {
+      map['end_auto'] = Variable<bool>(endAuto);
+    }
     map['sort_key'] = Variable<String>(sortKey);
     return map;
   }
@@ -1370,21 +1849,37 @@ class Version extends DataClass implements Insertable<Version> {
       updatedAt: Value(updatedAt),
       deleted: Value(deleted),
       projectId: Value(projectId),
-      environmentId: environmentId == null && nullToAbsent ? const Value.absent() : Value(environmentId),
+      environmentId: environmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(environmentId),
       kind: Value(kind),
       name: Value(name),
       status: Value(status),
       color: Value(color),
       colorCustom: Value(colorCustom),
-      startDate: startDate == null && nullToAbsent ? const Value.absent() : Value(startDate),
-      targetDate: targetDate == null && nullToAbsent ? const Value.absent() : Value(targetDate),
-      releasedDate: releasedDate == null && nullToAbsent ? const Value.absent() : Value(releasedDate),
-      description: description == null && nullToAbsent ? const Value.absent() : Value(description),
+      startDate: startDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startDate),
+      targetDate: targetDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetDate),
+      releasedDate: releasedDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(releasedDate),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      endAuto: endAuto == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endAuto),
       sortKey: Value(sortKey),
     );
   }
 
-  factory Version.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Version.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Version(
       id: serializer.fromJson<String>(json['id']),
@@ -1402,6 +1897,7 @@ class Version extends DataClass implements Insertable<Version> {
       targetDate: serializer.fromJson<DateTime?>(json['targetDate']),
       releasedDate: serializer.fromJson<DateTime?>(json['releasedDate']),
       description: serializer.fromJson<String?>(json['description']),
+      endAuto: serializer.fromJson<bool?>(json['endAuto']),
       sortKey: serializer.fromJson<String>(json['sortKey']),
     );
   }
@@ -1424,6 +1920,7 @@ class Version extends DataClass implements Insertable<Version> {
       'targetDate': serializer.toJson<DateTime?>(targetDate),
       'releasedDate': serializer.toJson<DateTime?>(releasedDate),
       'description': serializer.toJson<String?>(description),
+      'endAuto': serializer.toJson<bool?>(endAuto),
       'sortKey': serializer.toJson<String>(sortKey),
     };
   }
@@ -1444,6 +1941,7 @@ class Version extends DataClass implements Insertable<Version> {
     Value<DateTime?> targetDate = const Value.absent(),
     Value<DateTime?> releasedDate = const Value.absent(),
     Value<String?> description = const Value.absent(),
+    Value<bool?> endAuto = const Value.absent(),
     String? sortKey,
   }) => Version(
     id: id ?? this.id,
@@ -1451,7 +1949,9 @@ class Version extends DataClass implements Insertable<Version> {
     updatedAt: updatedAt ?? this.updatedAt,
     deleted: deleted ?? this.deleted,
     projectId: projectId ?? this.projectId,
-    environmentId: environmentId.present ? environmentId.value : this.environmentId,
+    environmentId: environmentId.present
+        ? environmentId.value
+        : this.environmentId,
     kind: kind ?? this.kind,
     name: name ?? this.name,
     status: status ?? this.status,
@@ -1461,6 +1961,7 @@ class Version extends DataClass implements Insertable<Version> {
     targetDate: targetDate.present ? targetDate.value : this.targetDate,
     releasedDate: releasedDate.present ? releasedDate.value : this.releasedDate,
     description: description.present ? description.value : this.description,
+    endAuto: endAuto.present ? endAuto.value : this.endAuto,
     sortKey: sortKey ?? this.sortKey,
   );
   Version copyWithCompanion(VersionsCompanion data) {
@@ -1470,16 +1971,27 @@ class Version extends DataClass implements Insertable<Version> {
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deleted: data.deleted.present ? data.deleted.value : this.deleted,
       projectId: data.projectId.present ? data.projectId.value : this.projectId,
-      environmentId: data.environmentId.present ? data.environmentId.value : this.environmentId,
+      environmentId: data.environmentId.present
+          ? data.environmentId.value
+          : this.environmentId,
       kind: data.kind.present ? data.kind.value : this.kind,
       name: data.name.present ? data.name.value : this.name,
       status: data.status.present ? data.status.value : this.status,
       color: data.color.present ? data.color.value : this.color,
-      colorCustom: data.colorCustom.present ? data.colorCustom.value : this.colorCustom,
+      colorCustom: data.colorCustom.present
+          ? data.colorCustom.value
+          : this.colorCustom,
       startDate: data.startDate.present ? data.startDate.value : this.startDate,
-      targetDate: data.targetDate.present ? data.targetDate.value : this.targetDate,
-      releasedDate: data.releasedDate.present ? data.releasedDate.value : this.releasedDate,
-      description: data.description.present ? data.description.value : this.description,
+      targetDate: data.targetDate.present
+          ? data.targetDate.value
+          : this.targetDate,
+      releasedDate: data.releasedDate.present
+          ? data.releasedDate.value
+          : this.releasedDate,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      endAuto: data.endAuto.present ? data.endAuto.value : this.endAuto,
       sortKey: data.sortKey.present ? data.sortKey.value : this.sortKey,
     );
   }
@@ -1502,6 +2014,7 @@ class Version extends DataClass implements Insertable<Version> {
           ..write('targetDate: $targetDate, ')
           ..write('releasedDate: $releasedDate, ')
           ..write('description: $description, ')
+          ..write('endAuto: $endAuto, ')
           ..write('sortKey: $sortKey')
           ..write(')'))
         .toString();
@@ -1524,6 +2037,7 @@ class Version extends DataClass implements Insertable<Version> {
     targetDate,
     releasedDate,
     description,
+    endAuto,
     sortKey,
   );
   @override
@@ -1545,6 +2059,7 @@ class Version extends DataClass implements Insertable<Version> {
           other.targetDate == this.targetDate &&
           other.releasedDate == this.releasedDate &&
           other.description == this.description &&
+          other.endAuto == this.endAuto &&
           other.sortKey == this.sortKey);
 }
 
@@ -1564,6 +2079,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
   final Value<DateTime?> targetDate;
   final Value<DateTime?> releasedDate;
   final Value<String?> description;
+  final Value<bool?> endAuto;
   final Value<String> sortKey;
   final Value<int> rowid;
   const VersionsCompanion({
@@ -1582,6 +2098,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
     this.targetDate = const Value.absent(),
     this.releasedDate = const Value.absent(),
     this.description = const Value.absent(),
+    this.endAuto = const Value.absent(),
     this.sortKey = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1601,6 +2118,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
     this.targetDate = const Value.absent(),
     this.releasedDate = const Value.absent(),
     this.description = const Value.absent(),
+    this.endAuto = const Value.absent(),
     required String sortKey,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1625,6 +2143,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
     Expression<DateTime>? targetDate,
     Expression<DateTime>? releasedDate,
     Expression<String>? description,
+    Expression<bool>? endAuto,
     Expression<String>? sortKey,
     Expression<int>? rowid,
   }) {
@@ -1644,6 +2163,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
       if (targetDate != null) 'target_date': targetDate,
       if (releasedDate != null) 'released_date': releasedDate,
       if (description != null) 'description': description,
+      if (endAuto != null) 'end_auto': endAuto,
       if (sortKey != null) 'sort_key': sortKey,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1665,6 +2185,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
     Value<DateTime?>? targetDate,
     Value<DateTime?>? releasedDate,
     Value<String?>? description,
+    Value<bool?>? endAuto,
     Value<String>? sortKey,
     Value<int>? rowid,
   }) {
@@ -1684,6 +2205,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
       targetDate: targetDate ?? this.targetDate,
       releasedDate: releasedDate ?? this.releasedDate,
       description: description ?? this.description,
+      endAuto: endAuto ?? this.endAuto,
       sortKey: sortKey ?? this.sortKey,
       rowid: rowid ?? this.rowid,
     );
@@ -1737,6 +2259,9 @@ class VersionsCompanion extends UpdateCompanion<Version> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
+    if (endAuto.present) {
+      map['end_auto'] = Variable<bool>(endAuto.value);
+    }
     if (sortKey.present) {
       map['sort_key'] = Variable<String>(sortKey.value);
     }
@@ -1764,6 +2289,7 @@ class VersionsCompanion extends UpdateCompanion<Version> {
           ..write('targetDate: $targetDate, ')
           ..write('releasedDate: $releasedDate, ')
           ..write('description: $description, ')
+          ..write('endAuto: $endAuto, ')
           ..write('sortKey: $sortKey, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -1785,7 +2311,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -1794,7 +2322,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -1803,7 +2333,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -1811,10 +2343,14 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _versionIdMeta = const VerificationMeta('versionId');
+  static const VerificationMeta _versionIdMeta = const VerificationMeta(
+    'versionId',
+  );
   @override
   late final GeneratedColumn<String> versionId = GeneratedColumn<String>(
     'version_id',
@@ -1840,7 +2376,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("done" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("done" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   static const VerificationMeta _doneAtMeta = const VerificationMeta('doneAt');
@@ -1852,7 +2390,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _priorityMeta = const VerificationMeta('priority');
+  static const VerificationMeta _priorityMeta = const VerificationMeta(
+    'priority',
+  );
   @override
   late final GeneratedColumn<int> priority = GeneratedColumn<int>(
     'priority',
@@ -1871,7 +2411,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _colorCustomMeta = const VerificationMeta('colorCustom');
+  static const VerificationMeta _colorCustomMeta = const VerificationMeta(
+    'colorCustom',
+  );
   @override
   late final GeneratedColumn<bool> colorCustom = GeneratedColumn<bool>(
     'color_custom',
@@ -1879,7 +2421,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("color_custom" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("color_custom" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
@@ -1891,7 +2435,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _startDateMeta = const VerificationMeta('startDate');
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
   @override
   late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
     'start_date',
@@ -1900,7 +2446,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _endDateMeta = const VerificationMeta('endDate');
+  static const VerificationMeta _endDateMeta = const VerificationMeta(
+    'endDate',
+  );
   @override
   late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
     'end_date',
@@ -1909,7 +2457,9 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -1918,16 +2468,20 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _delayedFromVersionIdMeta = const VerificationMeta('delayedFromVersionId');
+  static const VerificationMeta _delayedFromVersionIdMeta =
+      const VerificationMeta('delayedFromVersionId');
   @override
-  late final GeneratedColumn<String> delayedFromVersionId = GeneratedColumn<String>(
-    'delayed_from_version_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
+  late final GeneratedColumn<String> delayedFromVersionId =
+      GeneratedColumn<String>(
+        'delayed_from_version_id',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _delayCountMeta = const VerificationMeta(
+    'delayCount',
   );
-  static const VerificationMeta _delayCountMeta = const VerificationMeta('delayCount');
   @override
   late final GeneratedColumn<int> delayCount = GeneratedColumn<int>(
     'delay_count',
@@ -1963,7 +2517,10 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
   String get actualTableName => $name;
   static const String $name = 'features';
   @override
-  VerificationContext validateIntegrity(Insertable<Feature> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Feature> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1972,65 +2529,116 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('version_id')) {
-      context.handle(_versionIdMeta, versionId.isAcceptableOrUnknown(data['version_id']!, _versionIdMeta));
+      context.handle(
+        _versionIdMeta,
+        versionId.isAcceptableOrUnknown(data['version_id']!, _versionIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_versionIdMeta);
     }
     if (data.containsKey('title')) {
-      context.handle(_titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('done')) {
-      context.handle(_doneMeta, done.isAcceptableOrUnknown(data['done']!, _doneMeta));
+      context.handle(
+        _doneMeta,
+        done.isAcceptableOrUnknown(data['done']!, _doneMeta),
+      );
     }
     if (data.containsKey('done_at')) {
-      context.handle(_doneAtMeta, doneAt.isAcceptableOrUnknown(data['done_at']!, _doneAtMeta));
+      context.handle(
+        _doneAtMeta,
+        doneAt.isAcceptableOrUnknown(data['done_at']!, _doneAtMeta),
+      );
     }
     if (data.containsKey('priority')) {
-      context.handle(_priorityMeta, priority.isAcceptableOrUnknown(data['priority']!, _priorityMeta));
+      context.handle(
+        _priorityMeta,
+        priority.isAcceptableOrUnknown(data['priority']!, _priorityMeta),
+      );
     }
     if (data.containsKey('color')) {
-      context.handle(_colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     }
     if (data.containsKey('color_custom')) {
-      context.handle(_colorCustomMeta, colorCustom.isAcceptableOrUnknown(data['color_custom']!, _colorCustomMeta));
+      context.handle(
+        _colorCustomMeta,
+        colorCustom.isAcceptableOrUnknown(
+          data['color_custom']!,
+          _colorCustomMeta,
+        ),
+      );
     }
     if (data.containsKey('notes')) {
-      context.handle(_notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+      );
     }
     if (data.containsKey('start_date')) {
-      context.handle(_startDateMeta, startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
     }
     if (data.containsKey('end_date')) {
-      context.handle(_endDateMeta, endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta));
+      context.handle(
+        _endDateMeta,
+        endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta),
+      );
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
     if (data.containsKey('delayed_from_version_id')) {
       context.handle(
         _delayedFromVersionIdMeta,
-        delayedFromVersionId.isAcceptableOrUnknown(data['delayed_from_version_id']!, _delayedFromVersionIdMeta),
+        delayedFromVersionId.isAcceptableOrUnknown(
+          data['delayed_from_version_id']!,
+          _delayedFromVersionIdMeta,
+        ),
       );
     }
     if (data.containsKey('delay_count')) {
-      context.handle(_delayCountMeta, delayCount.isAcceptableOrUnknown(data['delay_count']!, _delayCountMeta));
+      context.handle(
+        _delayCountMeta,
+        delayCount.isAcceptableOrUnknown(data['delay_count']!, _delayCountMeta),
+      );
     }
     return context;
   }
@@ -2041,26 +2649,74 @@ class $FeaturesTable extends Features with TableInfo<$FeaturesTable, Feature> {
   Feature map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Feature(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      versionId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}version_id'])!,
-      title: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      done: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}done'])!,
-      doneAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}done_at']),
-      priority: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}priority'])!,
-      color: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}color']),
-      colorCustom: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}color_custom'])!,
-      notes: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}notes']),
-      startDate: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}start_date']),
-      endDate: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}end_date']),
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      versionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}version_id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      done: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}done'],
+      )!,
+      doneAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}done_at'],
+      ),
+      priority: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}priority'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      ),
+      colorCustom: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}color_custom'],
+      )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_date'],
+      ),
+      endDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}end_date'],
+      ),
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
       delayedFromVersionId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}delayed_from_version_id'],
       ),
-      delayCount: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}delay_count'])!,
+      delayCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}delay_count'],
+      )!,
     );
   }
 
@@ -2151,13 +2807,23 @@ class Feature extends DataClass implements Insertable<Feature> {
       versionId: Value(versionId),
       title: Value(title),
       done: Value(done),
-      doneAt: doneAt == null && nullToAbsent ? const Value.absent() : Value(doneAt),
+      doneAt: doneAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(doneAt),
       priority: Value(priority),
-      color: color == null && nullToAbsent ? const Value.absent() : Value(color),
+      color: color == null && nullToAbsent
+          ? const Value.absent()
+          : Value(color),
       colorCustom: Value(colorCustom),
-      notes: notes == null && nullToAbsent ? const Value.absent() : Value(notes),
-      startDate: startDate == null && nullToAbsent ? const Value.absent() : Value(startDate),
-      endDate: endDate == null && nullToAbsent ? const Value.absent() : Value(endDate),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      startDate: startDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startDate),
+      endDate: endDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endDate),
       sortKey: Value(sortKey),
       delayedFromVersionId: delayedFromVersionId == null && nullToAbsent
           ? const Value.absent()
@@ -2166,7 +2832,10 @@ class Feature extends DataClass implements Insertable<Feature> {
     );
   }
 
-  factory Feature.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Feature.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Feature(
       id: serializer.fromJson<String>(json['id']),
@@ -2184,7 +2853,9 @@ class Feature extends DataClass implements Insertable<Feature> {
       startDate: serializer.fromJson<DateTime?>(json['startDate']),
       endDate: serializer.fromJson<DateTime?>(json['endDate']),
       sortKey: serializer.fromJson<String>(json['sortKey']),
-      delayedFromVersionId: serializer.fromJson<String?>(json['delayedFromVersionId']),
+      delayedFromVersionId: serializer.fromJson<String?>(
+        json['delayedFromVersionId'],
+      ),
       delayCount: serializer.fromJson<int>(json['delayCount']),
     );
   }
@@ -2246,7 +2917,9 @@ class Feature extends DataClass implements Insertable<Feature> {
     startDate: startDate.present ? startDate.value : this.startDate,
     endDate: endDate.present ? endDate.value : this.endDate,
     sortKey: sortKey ?? this.sortKey,
-    delayedFromVersionId: delayedFromVersionId.present ? delayedFromVersionId.value : this.delayedFromVersionId,
+    delayedFromVersionId: delayedFromVersionId.present
+        ? delayedFromVersionId.value
+        : this.delayedFromVersionId,
     delayCount: delayCount ?? this.delayCount,
   );
   Feature copyWithCompanion(FeaturesCompanion data) {
@@ -2261,7 +2934,9 @@ class Feature extends DataClass implements Insertable<Feature> {
       doneAt: data.doneAt.present ? data.doneAt.value : this.doneAt,
       priority: data.priority.present ? data.priority.value : this.priority,
       color: data.color.present ? data.color.value : this.color,
-      colorCustom: data.colorCustom.present ? data.colorCustom.value : this.colorCustom,
+      colorCustom: data.colorCustom.present
+          ? data.colorCustom.value
+          : this.colorCustom,
       notes: data.notes.present ? data.notes.value : this.notes,
       startDate: data.startDate.present ? data.startDate.value : this.startDate,
       endDate: data.endDate.present ? data.endDate.value : this.endDate,
@@ -2269,7 +2944,9 @@ class Feature extends DataClass implements Insertable<Feature> {
       delayedFromVersionId: data.delayedFromVersionId.present
           ? data.delayedFromVersionId.value
           : this.delayedFromVersionId,
-      delayCount: data.delayCount.present ? data.delayCount.value : this.delayCount,
+      delayCount: data.delayCount.present
+          ? data.delayCount.value
+          : this.delayCount,
     );
   }
 
@@ -2440,7 +3117,8 @@ class FeaturesCompanion extends UpdateCompanion<Feature> {
       if (startDate != null) 'start_date': startDate,
       if (endDate != null) 'end_date': endDate,
       if (sortKey != null) 'sort_key': sortKey,
-      if (delayedFromVersionId != null) 'delayed_from_version_id': delayedFromVersionId,
+      if (delayedFromVersionId != null)
+        'delayed_from_version_id': delayedFromVersionId,
       if (delayCount != null) 'delay_count': delayCount,
       if (rowid != null) 'rowid': rowid,
     });
@@ -2537,7 +3215,9 @@ class FeaturesCompanion extends UpdateCompanion<Feature> {
       map['sort_key'] = Variable<String>(sortKey.value);
     }
     if (delayedFromVersionId.present) {
-      map['delayed_from_version_id'] = Variable<String>(delayedFromVersionId.value);
+      map['delayed_from_version_id'] = Variable<String>(
+        delayedFromVersionId.value,
+      );
     }
     if (delayCount.present) {
       map['delay_count'] = Variable<int>(delayCount.value);
@@ -2588,7 +3268,9 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -2597,7 +3279,9 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -2606,7 +3290,9 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -2614,10 +3300,14 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _featureIdMeta = const VerificationMeta('featureId');
+  static const VerificationMeta _featureIdMeta = const VerificationMeta(
+    'featureId',
+  );
   @override
   late final GeneratedColumn<String> featureId = GeneratedColumn<String>(
     'feature_id',
@@ -2626,7 +3316,9 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _parentIdMeta = const VerificationMeta('parentId');
+  static const VerificationMeta _parentIdMeta = const VerificationMeta(
+    'parentId',
+  );
   @override
   late final GeneratedColumn<String> parentId = GeneratedColumn<String>(
     'parent_id',
@@ -2652,10 +3344,14 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("done" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("done" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -2665,14 +3361,27 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, createdAt, updatedAt, deleted, featureId, parentId, title, done, sortKey];
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    featureId,
+    parentId,
+    title,
+    done,
+    sortKey,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'subitems';
   @override
-  VerificationContext validateIntegrity(Insertable<Subitem> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Subitem> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -2681,36 +3390,60 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('feature_id')) {
-      context.handle(_featureIdMeta, featureId.isAcceptableOrUnknown(data['feature_id']!, _featureIdMeta));
+      context.handle(
+        _featureIdMeta,
+        featureId.isAcceptableOrUnknown(data['feature_id']!, _featureIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_featureIdMeta);
     }
     if (data.containsKey('parent_id')) {
-      context.handle(_parentIdMeta, parentId.isAcceptableOrUnknown(data['parent_id']!, _parentIdMeta));
+      context.handle(
+        _parentIdMeta,
+        parentId.isAcceptableOrUnknown(data['parent_id']!, _parentIdMeta),
+      );
     }
     if (data.containsKey('title')) {
-      context.handle(_titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('done')) {
-      context.handle(_doneMeta, done.isAcceptableOrUnknown(data['done']!, _doneMeta));
+      context.handle(
+        _doneMeta,
+        done.isAcceptableOrUnknown(data['done']!, _doneMeta),
+      );
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
@@ -2723,15 +3456,42 @@ class $SubitemsTable extends Subitems with TableInfo<$SubitemsTable, Subitem> {
   Subitem map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Subitem(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      featureId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}feature_id'])!,
-      parentId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}parent_id']),
-      title: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      done: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}done'])!,
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      featureId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feature_id'],
+      )!,
+      parentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}parent_id'],
+      ),
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      done: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}done'],
+      )!,
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
     );
   }
 
@@ -2788,14 +3548,19 @@ class Subitem extends DataClass implements Insertable<Subitem> {
       updatedAt: Value(updatedAt),
       deleted: Value(deleted),
       featureId: Value(featureId),
-      parentId: parentId == null && nullToAbsent ? const Value.absent() : Value(parentId),
+      parentId: parentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(parentId),
       title: Value(title),
       done: Value(done),
       sortKey: Value(sortKey),
     );
   }
 
-  factory Subitem.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Subitem.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Subitem(
       id: serializer.fromJson<String>(json['id']),
@@ -2877,7 +3642,17 @@ class Subitem extends DataClass implements Insertable<Subitem> {
   }
 
   @override
-  int get hashCode => Object.hash(id, createdAt, updatedAt, deleted, featureId, parentId, title, done, sortKey);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    featureId,
+    parentId,
+    title,
+    done,
+    sortKey,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3039,7 +3814,8 @@ class SubitemsCompanion extends UpdateCompanion<Subitem> {
   }
 }
 
-class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Milestone> {
+class $MilestonesTable extends Milestones
+    with TableInfo<$MilestonesTable, Milestone> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -3053,7 +3829,9 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -3062,7 +3840,9 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -3071,7 +3851,9 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -3079,10 +3861,14 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _projectIdMeta = const VerificationMeta('projectId');
+  static const VerificationMeta _projectIdMeta = const VerificationMeta(
+    'projectId',
+  );
   @override
   late final GeneratedColumn<String> projectId = GeneratedColumn<String>(
     'project_id',
@@ -3128,7 +3914,9 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _colorCustomMeta = const VerificationMeta('colorCustom');
+  static const VerificationMeta _colorCustomMeta = const VerificationMeta(
+    'colorCustom',
+  );
   @override
   late final GeneratedColumn<bool> colorCustom = GeneratedColumn<bool>(
     'color_custom',
@@ -3136,7 +3924,9 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("color_custom" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("color_custom" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
   @override
@@ -3158,7 +3948,10 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
   String get actualTableName => $name;
   static const String $name = 'milestones';
   @override
-  VerificationContext validateIntegrity(Insertable<Milestone> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Milestone> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -3167,41 +3960,71 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('project_id')) {
-      context.handle(_projectIdMeta, projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
+      context.handle(
+        _projectIdMeta,
+        projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_projectIdMeta);
     }
     if (data.containsKey('title')) {
-      context.handle(_titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
     } else if (isInserting) {
       context.missing(_titleMeta);
     }
     if (data.containsKey('date')) {
-      context.handle(_dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
     } else if (isInserting) {
       context.missing(_dateMeta);
     }
     if (data.containsKey('kind')) {
-      context.handle(_kindMeta, kind.isAcceptableOrUnknown(data['kind']!, _kindMeta));
+      context.handle(
+        _kindMeta,
+        kind.isAcceptableOrUnknown(data['kind']!, _kindMeta),
+      );
     }
     if (data.containsKey('color')) {
-      context.handle(_colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     }
     if (data.containsKey('color_custom')) {
-      context.handle(_colorCustomMeta, colorCustom.isAcceptableOrUnknown(data['color_custom']!, _colorCustomMeta));
+      context.handle(
+        _colorCustomMeta,
+        colorCustom.isAcceptableOrUnknown(
+          data['color_custom']!,
+          _colorCustomMeta,
+        ),
+      );
     }
     return context;
   }
@@ -3212,16 +4035,46 @@ class $MilestonesTable extends Milestones with TableInfo<$MilestonesTable, Miles
   Milestone map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Milestone(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      projectId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}project_id'])!,
-      title: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      date: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
-      kind: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}kind'])!,
-      color: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}color']),
-      colorCustom: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}color_custom'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      projectId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}project_id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}date'],
+      )!,
+      kind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}kind'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      ),
+      colorCustom: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}color_custom'],
+      )!,
     );
   }
 
@@ -3282,12 +4135,17 @@ class Milestone extends DataClass implements Insertable<Milestone> {
       title: Value(title),
       date: Value(date),
       kind: Value(kind),
-      color: color == null && nullToAbsent ? const Value.absent() : Value(color),
+      color: color == null && nullToAbsent
+          ? const Value.absent()
+          : Value(color),
       colorCustom: Value(colorCustom),
     );
   }
 
-  factory Milestone.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Milestone.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Milestone(
       id: serializer.fromJson<String>(json['id']),
@@ -3353,7 +4211,9 @@ class Milestone extends DataClass implements Insertable<Milestone> {
       date: data.date.present ? data.date.value : this.date,
       kind: data.kind.present ? data.kind.value : this.kind,
       color: data.color.present ? data.color.value : this.color,
-      colorCustom: data.colorCustom.present ? data.colorCustom.value : this.colorCustom,
+      colorCustom: data.colorCustom.present
+          ? data.colorCustom.value
+          : this.colorCustom,
     );
   }
 
@@ -3375,7 +4235,18 @@ class Milestone extends DataClass implements Insertable<Milestone> {
   }
 
   @override
-  int get hashCode => Object.hash(id, createdAt, updatedAt, deleted, projectId, title, date, kind, color, colorCustom);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    projectId,
+    title,
+    date,
+    kind,
+    color,
+    colorCustom,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3563,7 +4434,9 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -3572,7 +4445,9 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -3581,7 +4456,9 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -3589,10 +4466,14 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _projectIdMeta = const VerificationMeta('projectId');
+  static const VerificationMeta _projectIdMeta = const VerificationMeta(
+    'projectId',
+  );
   @override
   late final GeneratedColumn<String> projectId = GeneratedColumn<String>(
     'project_id',
@@ -3620,7 +4501,9 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _colorCustomMeta = const VerificationMeta('colorCustom');
+  static const VerificationMeta _colorCustomMeta = const VerificationMeta(
+    'colorCustom',
+  );
   @override
   late final GeneratedColumn<bool> colorCustom = GeneratedColumn<bool>(
     'color_custom',
@@ -3628,10 +4511,14 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("color_custom" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("color_custom" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -3658,7 +4545,10 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   String get actualTableName => $name;
   static const String $name = 'tags';
   @override
-  VerificationContext validateIntegrity(Insertable<Tag> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Tag> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -3667,36 +4557,63 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('project_id')) {
-      context.handle(_projectIdMeta, projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta));
+      context.handle(
+        _projectIdMeta,
+        projectId.isAcceptableOrUnknown(data['project_id']!, _projectIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_projectIdMeta);
     }
     if (data.containsKey('name')) {
-      context.handle(_nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('color')) {
-      context.handle(_colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
     }
     if (data.containsKey('color_custom')) {
-      context.handle(_colorCustomMeta, colorCustom.isAcceptableOrUnknown(data['color_custom']!, _colorCustomMeta));
+      context.handle(
+        _colorCustomMeta,
+        colorCustom.isAcceptableOrUnknown(
+          data['color_custom']!,
+          _colorCustomMeta,
+        ),
+      );
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
@@ -3709,15 +4626,42 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   Tag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Tag(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      projectId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}project_id'])!,
-      name: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      color: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}color'])!,
-      colorCustom: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}color_custom'])!,
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      projectId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}project_id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}color'],
+      )!,
+      colorCustom: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}color_custom'],
+      )!,
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
     );
   }
 
@@ -3777,7 +4721,10 @@ class Tag extends DataClass implements Insertable<Tag> {
     );
   }
 
-  factory Tag.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Tag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Tag(
       id: serializer.fromJson<String>(json['id']),
@@ -3837,7 +4784,9 @@ class Tag extends DataClass implements Insertable<Tag> {
       projectId: data.projectId.present ? data.projectId.value : this.projectId,
       name: data.name.present ? data.name.value : this.name,
       color: data.color.present ? data.color.value : this.color,
-      colorCustom: data.colorCustom.present ? data.colorCustom.value : this.colorCustom,
+      colorCustom: data.colorCustom.present
+          ? data.colorCustom.value
+          : this.colorCustom,
       sortKey: data.sortKey.present ? data.sortKey.value : this.sortKey,
     );
   }
@@ -3859,7 +4808,17 @@ class Tag extends DataClass implements Insertable<Tag> {
   }
 
   @override
-  int get hashCode => Object.hash(id, createdAt, updatedAt, deleted, projectId, name, color, colorCustom, sortKey);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    projectId,
+    name,
+    color,
+    colorCustom,
+    sortKey,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4021,7 +4980,8 @@ class TagsCompanion extends UpdateCompanion<Tag> {
   }
 }
 
-class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, FeatureTag> {
+class $FeatureTagsTable extends FeatureTags
+    with TableInfo<$FeatureTagsTable, FeatureTag> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -4035,7 +4995,9 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -4044,7 +5006,9 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -4053,7 +5017,9 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -4061,10 +5027,14 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _featureIdMeta = const VerificationMeta('featureId');
+  static const VerificationMeta _featureIdMeta = const VerificationMeta(
+    'featureId',
+  );
   @override
   late final GeneratedColumn<String> featureId = GeneratedColumn<String>(
     'feature_id',
@@ -4083,14 +5053,24 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, createdAt, updatedAt, deleted, featureId, tagId];
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    featureId,
+    tagId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'feature_tags';
   @override
-  VerificationContext validateIntegrity(Insertable<FeatureTag> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<FeatureTag> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -4099,25 +5079,40 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('feature_id')) {
-      context.handle(_featureIdMeta, featureId.isAcceptableOrUnknown(data['feature_id']!, _featureIdMeta));
+      context.handle(
+        _featureIdMeta,
+        featureId.isAcceptableOrUnknown(data['feature_id']!, _featureIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_featureIdMeta);
     }
     if (data.containsKey('tag_id')) {
-      context.handle(_tagIdMeta, tagId.isAcceptableOrUnknown(data['tag_id']!, _tagIdMeta));
+      context.handle(
+        _tagIdMeta,
+        tagId.isAcceptableOrUnknown(data['tag_id']!, _tagIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_tagIdMeta);
     }
@@ -4130,12 +5125,30 @@ class $FeatureTagsTable extends FeatureTags with TableInfo<$FeatureTagsTable, Fe
   FeatureTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return FeatureTag(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      featureId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}feature_id'])!,
-      tagId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}tag_id'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      featureId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feature_id'],
+      )!,
+      tagId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tag_id'],
+      )!,
     );
   }
 
@@ -4183,7 +5196,10 @@ class FeatureTag extends DataClass implements Insertable<FeatureTag> {
     );
   }
 
-  factory FeatureTag.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory FeatureTag.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return FeatureTag(
       id: serializer.fromJson<String>(json['id']),
@@ -4207,15 +5223,21 @@ class FeatureTag extends DataClass implements Insertable<FeatureTag> {
     };
   }
 
-  FeatureTag copyWith({String? id, int? createdAt, int? updatedAt, bool? deleted, String? featureId, String? tagId}) =>
-      FeatureTag(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        deleted: deleted ?? this.deleted,
-        featureId: featureId ?? this.featureId,
-        tagId: tagId ?? this.tagId,
-      );
+  FeatureTag copyWith({
+    String? id,
+    int? createdAt,
+    int? updatedAt,
+    bool? deleted,
+    String? featureId,
+    String? tagId,
+  }) => FeatureTag(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deleted: deleted ?? this.deleted,
+    featureId: featureId ?? this.featureId,
+    tagId: tagId ?? this.tagId,
+  );
   FeatureTag copyWithCompanion(FeatureTagsCompanion data) {
     return FeatureTag(
       id: data.id.present ? data.id.value : this.id,
@@ -4241,7 +5263,8 @@ class FeatureTag extends DataClass implements Insertable<FeatureTag> {
   }
 
   @override
-  int get hashCode => Object.hash(id, createdAt, updatedAt, deleted, featureId, tagId);
+  int get hashCode =>
+      Object.hash(id, createdAt, updatedAt, deleted, featureId, tagId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4366,7 +5389,8 @@ class FeatureTagsCompanion extends UpdateCompanion<FeatureTag> {
   }
 }
 
-class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, Attachment> {
+class $AttachmentsTable extends Attachments
+    with TableInfo<$AttachmentsTable, Attachment> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -4380,7 +5404,9 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -4389,7 +5415,9 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
     'updated_at',
@@ -4398,7 +5426,9 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _deletedMeta = const VerificationMeta('deleted');
+  static const VerificationMeta _deletedMeta = const VerificationMeta(
+    'deleted',
+  );
   @override
   late final GeneratedColumn<bool> deleted = GeneratedColumn<bool>(
     'deleted',
@@ -4406,10 +5436,14 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     false,
     type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('CHECK ("deleted" IN (0, 1))'),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("deleted" IN (0, 1))',
+    ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _featureIdMeta = const VerificationMeta('featureId');
+  static const VerificationMeta _featureIdMeta = const VerificationMeta(
+    'featureId',
+  );
   @override
   late final GeneratedColumn<String> featureId = GeneratedColumn<String>(
     'feature_id',
@@ -4418,7 +5452,9 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _fileNameMeta = const VerificationMeta('fileName');
+  static const VerificationMeta _fileNameMeta = const VerificationMeta(
+    'fileName',
+  );
   @override
   late final GeneratedColumn<String> fileName = GeneratedColumn<String>(
     'file_name',
@@ -4427,7 +5463,9 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _originalNameMeta = const VerificationMeta('originalName');
+  static const VerificationMeta _originalNameMeta = const VerificationMeta(
+    'originalName',
+  );
   @override
   late final GeneratedColumn<String> originalName = GeneratedColumn<String>(
     'original_name',
@@ -4454,7 +5492,9 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _sortKeyMeta = const VerificationMeta('sortKey');
+  static const VerificationMeta _sortKeyMeta = const VerificationMeta(
+    'sortKey',
+  );
   @override
   late final GeneratedColumn<String> sortKey = GeneratedColumn<String>(
     'sort_key',
@@ -4482,7 +5522,10 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
   String get actualTableName => $name;
   static const String $name = 'attachments';
   @override
-  VerificationContext validateIntegrity(Insertable<Attachment> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Attachment> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -4491,45 +5534,75 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
       context.missing(_idMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_updatedAtMeta);
     }
     if (data.containsKey('deleted')) {
-      context.handle(_deletedMeta, deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta));
+      context.handle(
+        _deletedMeta,
+        deleted.isAcceptableOrUnknown(data['deleted']!, _deletedMeta),
+      );
     }
     if (data.containsKey('feature_id')) {
-      context.handle(_featureIdMeta, featureId.isAcceptableOrUnknown(data['feature_id']!, _featureIdMeta));
+      context.handle(
+        _featureIdMeta,
+        featureId.isAcceptableOrUnknown(data['feature_id']!, _featureIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_featureIdMeta);
     }
     if (data.containsKey('file_name')) {
-      context.handle(_fileNameMeta, fileName.isAcceptableOrUnknown(data['file_name']!, _fileNameMeta));
+      context.handle(
+        _fileNameMeta,
+        fileName.isAcceptableOrUnknown(data['file_name']!, _fileNameMeta),
+      );
     } else if (isInserting) {
       context.missing(_fileNameMeta);
     }
     if (data.containsKey('original_name')) {
-      context.handle(_originalNameMeta, originalName.isAcceptableOrUnknown(data['original_name']!, _originalNameMeta));
+      context.handle(
+        _originalNameMeta,
+        originalName.isAcceptableOrUnknown(
+          data['original_name']!,
+          _originalNameMeta,
+        ),
+      );
     } else if (isInserting) {
       context.missing(_originalNameMeta);
     }
     if (data.containsKey('width')) {
-      context.handle(_widthMeta, width.isAcceptableOrUnknown(data['width']!, _widthMeta));
+      context.handle(
+        _widthMeta,
+        width.isAcceptableOrUnknown(data['width']!, _widthMeta),
+      );
     } else if (isInserting) {
       context.missing(_widthMeta);
     }
     if (data.containsKey('height')) {
-      context.handle(_heightMeta, height.isAcceptableOrUnknown(data['height']!, _heightMeta));
+      context.handle(
+        _heightMeta,
+        height.isAcceptableOrUnknown(data['height']!, _heightMeta),
+      );
     } else if (isInserting) {
       context.missing(_heightMeta);
     }
     if (data.containsKey('sort_key')) {
-      context.handle(_sortKeyMeta, sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta));
+      context.handle(
+        _sortKeyMeta,
+        sortKey.isAcceptableOrUnknown(data['sort_key']!, _sortKeyMeta),
+      );
     } else if (isInserting) {
       context.missing(_sortKeyMeta);
     }
@@ -4542,16 +5615,46 @@ class $AttachmentsTable extends Attachments with TableInfo<$AttachmentsTable, At
   Attachment map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Attachment(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
-      deleted: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}deleted'])!,
-      featureId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}feature_id'])!,
-      fileName: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}file_name'])!,
-      originalName: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}original_name'])!,
-      width: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}width'])!,
-      height: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}height'])!,
-      sortKey: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}sort_key'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deleted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}deleted'],
+      )!,
+      featureId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feature_id'],
+      )!,
+      fileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_name'],
+      )!,
+      originalName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}original_name'],
+      )!,
+      width: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}width'],
+      )!,
+      height: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}height'],
+      )!,
+      sortKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sort_key'],
+      )!,
     );
   }
 
@@ -4615,7 +5718,10 @@ class Attachment extends DataClass implements Insertable<Attachment> {
     );
   }
 
-  factory Attachment.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory Attachment.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Attachment(
       id: serializer.fromJson<String>(json['id']),
@@ -4678,7 +5784,9 @@ class Attachment extends DataClass implements Insertable<Attachment> {
       deleted: data.deleted.present ? data.deleted.value : this.deleted,
       featureId: data.featureId.present ? data.featureId.value : this.featureId,
       fileName: data.fileName.present ? data.fileName.value : this.fileName,
-      originalName: data.originalName.present ? data.originalName.value : this.originalName,
+      originalName: data.originalName.present
+          ? data.originalName.value
+          : this.originalName,
       width: data.width.present ? data.width.value : this.width,
       height: data.height.present ? data.height.value : this.height,
       sortKey: data.sortKey.present ? data.sortKey.value : this.sortKey,
@@ -4703,8 +5811,18 @@ class Attachment extends DataClass implements Insertable<Attachment> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, createdAt, updatedAt, deleted, featureId, fileName, originalName, width, height, sortKey);
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deleted,
+    featureId,
+    fileName,
+    originalName,
+    width,
+    height,
+    sortKey,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4894,7 +6012,8 @@ abstract class _$VersoDb extends GeneratedDatabase {
   late final $FeatureTagsTable featureTags = $FeatureTagsTable(this);
   late final $AttachmentsTable attachments = $AttachmentsTable(this);
   @override
-  Iterable<TableInfo<Table, Object?>> get allTables => allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     projects,
@@ -4922,6 +6041,7 @@ typedef $$ProjectsTableCreateCompanionBuilder =
       required String sortKey,
       Value<bool> archived,
       Value<bool> paused,
+      Value<String?> description,
       Value<int> rowid,
     });
 typedef $$ProjectsTableUpdateCompanionBuilder =
@@ -4937,10 +6057,12 @@ typedef $$ProjectsTableUpdateCompanionBuilder =
       Value<String> sortKey,
       Value<bool> archived,
       Value<bool> paused,
+      Value<String?> description,
       Value<int> rowid,
     });
 
-class $$ProjectsTableFilterComposer extends Composer<_$VersoDb, $ProjectsTable> {
+class $$ProjectsTableFilterComposer
+    extends Composer<_$VersoDb, $ProjectsTable> {
   $$ProjectsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -4948,37 +6070,69 @@ class $$ProjectsTableFilterComposer extends Composer<_$VersoDb, $ProjectsTable> 
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get name => $composableBuilder(column: $table.name, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get color => $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get icon => $composableBuilder(column: $table.icon, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get icon => $composableBuilder(
+    column: $table.icon,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get archived =>
-      $composableBuilder(column: $table.archived, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get archived => $composableBuilder(
+    column: $table.archived,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get paused =>
-      $composableBuilder(column: $table.paused, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get paused => $composableBuilder(
+    column: $table.paused,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$ProjectsTableOrderingComposer extends Composer<_$VersoDb, $ProjectsTable> {
+class $$ProjectsTableOrderingComposer
+    extends Composer<_$VersoDb, $ProjectsTable> {
   $$ProjectsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -4986,40 +6140,69 @@ class $$ProjectsTableOrderingComposer extends Composer<_$VersoDb, $ProjectsTable
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get icon =>
-      $composableBuilder(column: $table.icon, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get icon => $composableBuilder(
+    column: $table.icon,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get archived =>
-      $composableBuilder(column: $table.archived, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get archived => $composableBuilder(
+    column: $table.archived,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get paused =>
-      $composableBuilder(column: $table.paused, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get paused => $composableBuilder(
+    column: $table.paused,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$ProjectsTableAnnotationComposer extends Composer<_$VersoDb, $ProjectsTable> {
+class $$ProjectsTableAnnotationComposer
+    extends Composer<_$VersoDb, $ProjectsTable> {
   $$ProjectsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -5027,27 +6210,45 @@ class $$ProjectsTableAnnotationComposer extends Composer<_$VersoDb, $ProjectsTab
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get name => $composableBuilder(column: $table.name, builder: (column) => column);
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<int> get color => $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<bool> get colorCustom => $composableBuilder(column: $table.colorCustom, builder: (column) => column);
+  GeneratedColumn<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<String> get icon => $composableBuilder(column: $table.icon, builder: (column) => column);
+  GeneratedColumn<String> get icon =>
+      $composableBuilder(column: $table.icon, builder: (column) => column);
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 
-  GeneratedColumn<bool> get archived => $composableBuilder(column: $table.archived, builder: (column) => column);
+  GeneratedColumn<bool> get archived =>
+      $composableBuilder(column: $table.archived, builder: (column) => column);
 
-  GeneratedColumn<bool> get paused => $composableBuilder(column: $table.paused, builder: (column) => column);
+  GeneratedColumn<bool> get paused =>
+      $composableBuilder(column: $table.paused, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 }
 
 class $$ProjectsTableTableManager
@@ -5070,9 +6271,12 @@ class $$ProjectsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$ProjectsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$ProjectsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$ProjectsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$ProjectsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProjectsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProjectsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -5086,6 +6290,7 @@ class $$ProjectsTableTableManager
                 Value<String> sortKey = const Value.absent(),
                 Value<bool> archived = const Value.absent(),
                 Value<bool> paused = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProjectsCompanion(
                 id: id,
@@ -5099,6 +6304,7 @@ class $$ProjectsTableTableManager
                 sortKey: sortKey,
                 archived: archived,
                 paused: paused,
+                description: description,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -5114,6 +6320,7 @@ class $$ProjectsTableTableManager
                 required String sortKey,
                 Value<bool> archived = const Value.absent(),
                 Value<bool> paused = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProjectsCompanion.insert(
                 id: id,
@@ -5127,13 +6334,18 @@ class $$ProjectsTableTableManager
                 sortKey: sortKey,
                 archived: archived,
                 paused: paused,
+                description: description,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
                   e.readTable<$ProjectsTable, Project>(table),
-                  BaseReferences<_$VersoDb, $ProjectsTable, Project>(db, table, e),
+                  BaseReferences<_$VersoDb, $ProjectsTable, Project>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -5164,6 +6376,7 @@ typedef $$EnvironmentsTableCreateCompanionBuilder =
       Value<bool> deleted,
       required String name,
       Value<String> icon,
+      Value<String?> description,
       Value<int> color,
       Value<bool> colorCustom,
       required String sortKey,
@@ -5177,13 +6390,15 @@ typedef $$EnvironmentsTableUpdateCompanionBuilder =
       Value<bool> deleted,
       Value<String> name,
       Value<String> icon,
+      Value<String?> description,
       Value<int> color,
       Value<bool> colorCustom,
       Value<String> sortKey,
       Value<int> rowid,
     });
 
-class $$EnvironmentsTableFilterComposer extends Composer<_$VersoDb, $EnvironmentsTable> {
+class $$EnvironmentsTableFilterComposer
+    extends Composer<_$VersoDb, $EnvironmentsTable> {
   $$EnvironmentsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -5191,31 +6406,59 @@ class $$EnvironmentsTableFilterComposer extends Composer<_$VersoDb, $Environment
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get name => $composableBuilder(column: $table.name, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get icon => $composableBuilder(column: $table.icon, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get icon => $composableBuilder(
+    column: $table.icon,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get color => $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$EnvironmentsTableOrderingComposer extends Composer<_$VersoDb, $EnvironmentsTable> {
+class $$EnvironmentsTableOrderingComposer
+    extends Composer<_$VersoDb, $EnvironmentsTable> {
   $$EnvironmentsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -5223,34 +6466,59 @@ class $$EnvironmentsTableOrderingComposer extends Composer<_$VersoDb, $Environme
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get icon =>
-      $composableBuilder(column: $table.icon, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get icon => $composableBuilder(
+    column: $table.icon,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$EnvironmentsTableAnnotationComposer extends Composer<_$VersoDb, $EnvironmentsTable> {
+class $$EnvironmentsTableAnnotationComposer
+    extends Composer<_$VersoDb, $EnvironmentsTable> {
   $$EnvironmentsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -5258,23 +6526,39 @@ class $$EnvironmentsTableAnnotationComposer extends Composer<_$VersoDb, $Environ
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get name => $composableBuilder(column: $table.name, builder: (column) => column);
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get icon => $composableBuilder(column: $table.icon, builder: (column) => column);
+  GeneratedColumn<String> get icon =>
+      $composableBuilder(column: $table.icon, builder: (column) => column);
 
-  GeneratedColumn<int> get color => $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<bool> get colorCustom => $composableBuilder(column: $table.colorCustom, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 }
 
 class $$EnvironmentsTableTableManager
@@ -5288,7 +6572,10 @@ class $$EnvironmentsTableTableManager
           $$EnvironmentsTableAnnotationComposer,
           $$EnvironmentsTableCreateCompanionBuilder,
           $$EnvironmentsTableUpdateCompanionBuilder,
-          (Environment, BaseReferences<_$VersoDb, $EnvironmentsTable, Environment>),
+          (
+            Environment,
+            BaseReferences<_$VersoDb, $EnvironmentsTable, Environment>,
+          ),
           Environment,
           PrefetchHooks Function()
         > {
@@ -5297,9 +6584,12 @@ class $$EnvironmentsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$EnvironmentsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$EnvironmentsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$EnvironmentsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$EnvironmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$EnvironmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$EnvironmentsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -5308,6 +6598,7 @@ class $$EnvironmentsTableTableManager
                 Value<bool> deleted = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> icon = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> color = const Value.absent(),
                 Value<bool> colorCustom = const Value.absent(),
                 Value<String> sortKey = const Value.absent(),
@@ -5319,6 +6610,7 @@ class $$EnvironmentsTableTableManager
                 deleted: deleted,
                 name: name,
                 icon: icon,
+                description: description,
                 color: color,
                 colorCustom: colorCustom,
                 sortKey: sortKey,
@@ -5332,6 +6624,7 @@ class $$EnvironmentsTableTableManager
                 Value<bool> deleted = const Value.absent(),
                 required String name,
                 Value<String> icon = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> color = const Value.absent(),
                 Value<bool> colorCustom = const Value.absent(),
                 required String sortKey,
@@ -5343,6 +6636,7 @@ class $$EnvironmentsTableTableManager
                 deleted: deleted,
                 name: name,
                 icon: icon,
+                description: description,
                 color: color,
                 colorCustom: colorCustom,
                 sortKey: sortKey,
@@ -5352,7 +6646,11 @@ class $$EnvironmentsTableTableManager
               .map(
                 (e) => (
                   e.readTable<$EnvironmentsTable, Environment>(table),
-                  BaseReferences<_$VersoDb, $EnvironmentsTable, Environment>(db, table, e),
+                  BaseReferences<_$VersoDb, $EnvironmentsTable, Environment>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -5392,6 +6690,7 @@ typedef $$VersionsTableCreateCompanionBuilder =
       Value<DateTime?> targetDate,
       Value<DateTime?> releasedDate,
       Value<String?> description,
+      Value<bool?> endAuto,
       required String sortKey,
       Value<int> rowid,
     });
@@ -5412,11 +6711,13 @@ typedef $$VersionsTableUpdateCompanionBuilder =
       Value<DateTime?> targetDate,
       Value<DateTime?> releasedDate,
       Value<String?> description,
+      Value<bool?> endAuto,
       Value<String> sortKey,
       Value<int> rowid,
     });
 
-class $$VersionsTableFilterComposer extends Composer<_$VersoDb, $VersionsTable> {
+class $$VersionsTableFilterComposer
+    extends Composer<_$VersoDb, $VersionsTable> {
   $$VersionsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -5424,52 +6725,94 @@ class $$VersionsTableFilterComposer extends Composer<_$VersoDb, $VersionsTable> 
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get projectId =>
-      $composableBuilder(column: $table.projectId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get projectId => $composableBuilder(
+    column: $table.projectId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get environmentId =>
-      $composableBuilder(column: $table.environmentId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get environmentId => $composableBuilder(
+    column: $table.environmentId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get name => $composableBuilder(column: $table.name, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get color => $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<DateTime> get startDate =>
-      $composableBuilder(column: $table.startDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<DateTime> get targetDate =>
-      $composableBuilder(column: $table.targetDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<DateTime> get releasedDate =>
-      $composableBuilder(column: $table.releasedDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get releasedDate => $composableBuilder(
+    column: $table.releasedDate,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get description =>
-      $composableBuilder(column: $table.description, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get endAuto => $composableBuilder(
+    column: $table.endAuto,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$VersionsTableOrderingComposer extends Composer<_$VersoDb, $VersionsTable> {
+class $$VersionsTableOrderingComposer
+    extends Composer<_$VersoDb, $VersionsTable> {
   $$VersionsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -5477,55 +6820,94 @@ class $$VersionsTableOrderingComposer extends Composer<_$VersoDb, $VersionsTable
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get projectId =>
-      $composableBuilder(column: $table.projectId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get projectId => $composableBuilder(
+    column: $table.projectId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get environmentId =>
-      $composableBuilder(column: $table.environmentId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get environmentId => $composableBuilder(
+    column: $table.environmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get kind =>
-      $composableBuilder(column: $table.kind, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<DateTime> get startDate =>
-      $composableBuilder(column: $table.startDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<DateTime> get targetDate =>
-      $composableBuilder(column: $table.targetDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<DateTime> get releasedDate =>
-      $composableBuilder(column: $table.releasedDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get releasedDate => $composableBuilder(
+    column: $table.releasedDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get description =>
-      $composableBuilder(column: $table.description, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get endAuto => $composableBuilder(
+    column: $table.endAuto,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$VersionsTableAnnotationComposer extends Composer<_$VersoDb, $VersionsTable> {
+class $$VersionsTableAnnotationComposer
+    extends Composer<_$VersoDb, $VersionsTable> {
   $$VersionsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -5533,41 +6915,66 @@ class $$VersionsTableAnnotationComposer extends Composer<_$VersoDb, $VersionsTab
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get projectId => $composableBuilder(column: $table.projectId, builder: (column) => column);
+  GeneratedColumn<String> get projectId =>
+      $composableBuilder(column: $table.projectId, builder: (column) => column);
 
-  GeneratedColumn<String> get environmentId =>
-      $composableBuilder(column: $table.environmentId, builder: (column) => column);
+  GeneratedColumn<String> get environmentId => $composableBuilder(
+    column: $table.environmentId,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => column);
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
 
-  GeneratedColumn<String> get name => $composableBuilder(column: $table.name, builder: (column) => column);
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get status => $composableBuilder(column: $table.status, builder: (column) => column);
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
 
-  GeneratedColumn<int> get color => $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<bool> get colorCustom => $composableBuilder(column: $table.colorCustom, builder: (column) => column);
+  GeneratedColumn<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<DateTime> get startDate => $composableBuilder(column: $table.startDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get targetDate =>
-      $composableBuilder(column: $table.targetDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get targetDate => $composableBuilder(
+    column: $table.targetDate,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<DateTime> get releasedDate =>
-      $composableBuilder(column: $table.releasedDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get releasedDate => $composableBuilder(
+    column: $table.releasedDate,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<String> get description =>
-      $composableBuilder(column: $table.description, builder: (column) => column);
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<bool> get endAuto =>
+      $composableBuilder(column: $table.endAuto, builder: (column) => column);
+
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 }
 
 class $$VersionsTableTableManager
@@ -5590,9 +6997,12 @@ class $$VersionsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$VersionsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$VersionsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$VersionsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$VersionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VersionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VersionsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -5610,6 +7020,7 @@ class $$VersionsTableTableManager
                 Value<DateTime?> targetDate = const Value.absent(),
                 Value<DateTime?> releasedDate = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<bool?> endAuto = const Value.absent(),
                 Value<String> sortKey = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => VersionsCompanion(
@@ -5628,6 +7039,7 @@ class $$VersionsTableTableManager
                 targetDate: targetDate,
                 releasedDate: releasedDate,
                 description: description,
+                endAuto: endAuto,
                 sortKey: sortKey,
                 rowid: rowid,
               ),
@@ -5648,6 +7060,7 @@ class $$VersionsTableTableManager
                 Value<DateTime?> targetDate = const Value.absent(),
                 Value<DateTime?> releasedDate = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<bool?> endAuto = const Value.absent(),
                 required String sortKey,
                 Value<int> rowid = const Value.absent(),
               }) => VersionsCompanion.insert(
@@ -5666,6 +7079,7 @@ class $$VersionsTableTableManager
                 targetDate: targetDate,
                 releasedDate: releasedDate,
                 description: description,
+                endAuto: endAuto,
                 sortKey: sortKey,
                 rowid: rowid,
               ),
@@ -5673,7 +7087,11 @@ class $$VersionsTableTableManager
               .map(
                 (e) => (
                   e.readTable<$VersionsTable, Version>(table),
-                  BaseReferences<_$VersoDb, $VersionsTable, Version>(db, table, e),
+                  BaseReferences<_$VersoDb, $VersionsTable, Version>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -5739,7 +7157,8 @@ typedef $$FeaturesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$FeaturesTableFilterComposer extends Composer<_$VersoDb, $FeaturesTable> {
+class $$FeaturesTableFilterComposer
+    extends Composer<_$VersoDb, $FeaturesTable> {
   $$FeaturesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -5747,56 +7166,94 @@ class $$FeaturesTableFilterComposer extends Composer<_$VersoDb, $FeaturesTable> 
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get versionId =>
-      $composableBuilder(column: $table.versionId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get versionId => $composableBuilder(
+    column: $table.versionId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get done => $composableBuilder(column: $table.done, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get done => $composableBuilder(
+    column: $table.done,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get doneAt =>
-      $composableBuilder(column: $table.doneAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get doneAt => $composableBuilder(
+    column: $table.doneAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get priority =>
-      $composableBuilder(column: $table.priority, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get priority => $composableBuilder(
+    column: $table.priority,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get color => $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get notes =>
-      $composableBuilder(column: $table.notes, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<DateTime> get startDate =>
-      $composableBuilder(column: $table.startDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<DateTime> get endDate =>
-      $composableBuilder(column: $table.endDate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get delayedFromVersionId =>
-      $composableBuilder(column: $table.delayedFromVersionId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get delayedFromVersionId => $composableBuilder(
+    column: $table.delayedFromVersionId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get delayCount =>
-      $composableBuilder(column: $table.delayCount, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get delayCount => $composableBuilder(
+    column: $table.delayCount,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$FeaturesTableOrderingComposer extends Composer<_$VersoDb, $FeaturesTable> {
+class $$FeaturesTableOrderingComposer
+    extends Composer<_$VersoDb, $FeaturesTable> {
   $$FeaturesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -5804,58 +7261,94 @@ class $$FeaturesTableOrderingComposer extends Composer<_$VersoDb, $FeaturesTable
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get versionId =>
-      $composableBuilder(column: $table.versionId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get versionId => $composableBuilder(
+    column: $table.versionId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get done =>
-      $composableBuilder(column: $table.done, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get done => $composableBuilder(
+    column: $table.done,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get doneAt =>
-      $composableBuilder(column: $table.doneAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get doneAt => $composableBuilder(
+    column: $table.doneAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get priority =>
-      $composableBuilder(column: $table.priority, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get priority => $composableBuilder(
+    column: $table.priority,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get notes =>
-      $composableBuilder(column: $table.notes, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<DateTime> get startDate =>
-      $composableBuilder(column: $table.startDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<DateTime> get endDate =>
-      $composableBuilder(column: $table.endDate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get delayedFromVersionId =>
-      $composableBuilder(column: $table.delayedFromVersionId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get delayedFromVersionId => $composableBuilder(
+    column: $table.delayedFromVersionId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get delayCount =>
-      $composableBuilder(column: $table.delayCount, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get delayCount => $composableBuilder(
+    column: $table.delayCount,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$FeaturesTableAnnotationComposer extends Composer<_$VersoDb, $FeaturesTable> {
+class $$FeaturesTableAnnotationComposer
+    extends Composer<_$VersoDb, $FeaturesTable> {
   $$FeaturesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -5863,40 +7356,62 @@ class $$FeaturesTableAnnotationComposer extends Composer<_$VersoDb, $FeaturesTab
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get versionId => $composableBuilder(column: $table.versionId, builder: (column) => column);
+  GeneratedColumn<String> get versionId =>
+      $composableBuilder(column: $table.versionId, builder: (column) => column);
 
-  GeneratedColumn<String> get title => $composableBuilder(column: $table.title, builder: (column) => column);
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
 
-  GeneratedColumn<bool> get done => $composableBuilder(column: $table.done, builder: (column) => column);
+  GeneratedColumn<bool> get done =>
+      $composableBuilder(column: $table.done, builder: (column) => column);
 
-  GeneratedColumn<int> get doneAt => $composableBuilder(column: $table.doneAt, builder: (column) => column);
+  GeneratedColumn<int> get doneAt =>
+      $composableBuilder(column: $table.doneAt, builder: (column) => column);
 
-  GeneratedColumn<int> get priority => $composableBuilder(column: $table.priority, builder: (column) => column);
+  GeneratedColumn<int> get priority =>
+      $composableBuilder(column: $table.priority, builder: (column) => column);
 
-  GeneratedColumn<int> get color => $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<bool> get colorCustom => $composableBuilder(column: $table.colorCustom, builder: (column) => column);
+  GeneratedColumn<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<String> get notes => $composableBuilder(column: $table.notes, builder: (column) => column);
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get startDate => $composableBuilder(column: $table.startDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get endDate => $composableBuilder(column: $table.endDate, builder: (column) => column);
+  GeneratedColumn<DateTime> get endDate =>
+      $composableBuilder(column: $table.endDate, builder: (column) => column);
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 
-  GeneratedColumn<String> get delayedFromVersionId =>
-      $composableBuilder(column: $table.delayedFromVersionId, builder: (column) => column);
+  GeneratedColumn<String> get delayedFromVersionId => $composableBuilder(
+    column: $table.delayedFromVersionId,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<int> get delayCount => $composableBuilder(column: $table.delayCount, builder: (column) => column);
+  GeneratedColumn<int> get delayCount => $composableBuilder(
+    column: $table.delayCount,
+    builder: (column) => column,
+  );
 }
 
 class $$FeaturesTableTableManager
@@ -5919,9 +7434,12 @@ class $$FeaturesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$FeaturesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$FeaturesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$FeaturesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$FeaturesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FeaturesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FeaturesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -6006,7 +7524,11 @@ class $$FeaturesTableTableManager
               .map(
                 (e) => (
                   e.readTable<$FeaturesTable, Feature>(table),
-                  BaseReferences<_$VersoDb, $FeaturesTable, Feature>(db, table, e),
+                  BaseReferences<_$VersoDb, $FeaturesTable, Feature>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -6056,7 +7578,8 @@ typedef $$SubitemsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$SubitemsTableFilterComposer extends Composer<_$VersoDb, $SubitemsTable> {
+class $$SubitemsTableFilterComposer
+    extends Composer<_$VersoDb, $SubitemsTable> {
   $$SubitemsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -6064,33 +7587,54 @@ class $$SubitemsTableFilterComposer extends Composer<_$VersoDb, $SubitemsTable> 
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get featureId =>
-      $composableBuilder(column: $table.featureId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get featureId => $composableBuilder(
+    column: $table.featureId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get parentId =>
-      $composableBuilder(column: $table.parentId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get parentId => $composableBuilder(
+    column: $table.parentId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get done => $composableBuilder(column: $table.done, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get done => $composableBuilder(
+    column: $table.done,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$SubitemsTableOrderingComposer extends Composer<_$VersoDb, $SubitemsTable> {
+class $$SubitemsTableOrderingComposer
+    extends Composer<_$VersoDb, $SubitemsTable> {
   $$SubitemsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -6098,34 +7642,54 @@ class $$SubitemsTableOrderingComposer extends Composer<_$VersoDb, $SubitemsTable
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get featureId =>
-      $composableBuilder(column: $table.featureId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get featureId => $composableBuilder(
+    column: $table.featureId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get parentId =>
-      $composableBuilder(column: $table.parentId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get parentId => $composableBuilder(
+    column: $table.parentId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get done =>
-      $composableBuilder(column: $table.done, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get done => $composableBuilder(
+    column: $table.done,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$SubitemsTableAnnotationComposer extends Composer<_$VersoDb, $SubitemsTable> {
+class $$SubitemsTableAnnotationComposer
+    extends Composer<_$VersoDb, $SubitemsTable> {
   $$SubitemsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -6133,23 +7697,32 @@ class $$SubitemsTableAnnotationComposer extends Composer<_$VersoDb, $SubitemsTab
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get featureId => $composableBuilder(column: $table.featureId, builder: (column) => column);
+  GeneratedColumn<String> get featureId =>
+      $composableBuilder(column: $table.featureId, builder: (column) => column);
 
-  GeneratedColumn<String> get parentId => $composableBuilder(column: $table.parentId, builder: (column) => column);
+  GeneratedColumn<String> get parentId =>
+      $composableBuilder(column: $table.parentId, builder: (column) => column);
 
-  GeneratedColumn<String> get title => $composableBuilder(column: $table.title, builder: (column) => column);
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
 
-  GeneratedColumn<bool> get done => $composableBuilder(column: $table.done, builder: (column) => column);
+  GeneratedColumn<bool> get done =>
+      $composableBuilder(column: $table.done, builder: (column) => column);
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 }
 
 class $$SubitemsTableTableManager
@@ -6172,9 +7745,12 @@ class $$SubitemsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$SubitemsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$SubitemsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$SubitemsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$SubitemsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SubitemsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SubitemsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -6227,7 +7803,11 @@ class $$SubitemsTableTableManager
               .map(
                 (e) => (
                   e.readTable<$SubitemsTable, Subitem>(table),
-                  BaseReferences<_$VersoDb, $SubitemsTable, Subitem>(db, table, e),
+                  BaseReferences<_$VersoDb, $SubitemsTable, Subitem>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -6279,7 +7859,8 @@ typedef $$MilestonesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$MilestonesTableFilterComposer extends Composer<_$VersoDb, $MilestonesTable> {
+class $$MilestonesTableFilterComposer
+    extends Composer<_$VersoDb, $MilestonesTable> {
   $$MilestonesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -6287,35 +7868,59 @@ class $$MilestonesTableFilterComposer extends Composer<_$VersoDb, $MilestonesTab
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get projectId =>
-      $composableBuilder(column: $table.projectId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get projectId => $composableBuilder(
+    column: $table.projectId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<DateTime> get date =>
-      $composableBuilder(column: $table.date, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get color => $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$MilestonesTableOrderingComposer extends Composer<_$VersoDb, $MilestonesTable> {
+class $$MilestonesTableOrderingComposer
+    extends Composer<_$VersoDb, $MilestonesTable> {
   $$MilestonesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -6323,37 +7928,59 @@ class $$MilestonesTableOrderingComposer extends Composer<_$VersoDb, $MilestonesT
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get projectId =>
-      $composableBuilder(column: $table.projectId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get projectId => $composableBuilder(
+    column: $table.projectId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<DateTime> get date =>
-      $composableBuilder(column: $table.date, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get kind =>
-      $composableBuilder(column: $table.kind, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get kind => $composableBuilder(
+    column: $table.kind,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$MilestonesTableAnnotationComposer extends Composer<_$VersoDb, $MilestonesTable> {
+class $$MilestonesTableAnnotationComposer
+    extends Composer<_$VersoDb, $MilestonesTable> {
   $$MilestonesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -6361,25 +7988,37 @@ class $$MilestonesTableAnnotationComposer extends Composer<_$VersoDb, $Milestone
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get projectId => $composableBuilder(column: $table.projectId, builder: (column) => column);
+  GeneratedColumn<String> get projectId =>
+      $composableBuilder(column: $table.projectId, builder: (column) => column);
 
-  GeneratedColumn<String> get title => $composableBuilder(column: $table.title, builder: (column) => column);
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get date => $composableBuilder(column: $table.date, builder: (column) => column);
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
 
-  GeneratedColumn<String> get kind => $composableBuilder(column: $table.kind, builder: (column) => column);
+  GeneratedColumn<String> get kind =>
+      $composableBuilder(column: $table.kind, builder: (column) => column);
 
-  GeneratedColumn<int> get color => $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<bool> get colorCustom => $composableBuilder(column: $table.colorCustom, builder: (column) => column);
+  GeneratedColumn<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => column,
+  );
 }
 
 class $$MilestonesTableTableManager
@@ -6402,9 +8041,12 @@ class $$MilestonesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$MilestonesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$MilestonesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$MilestonesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$MilestonesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MilestonesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MilestonesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -6461,7 +8103,11 @@ class $$MilestonesTableTableManager
               .map(
                 (e) => (
                   e.readTable<$MilestonesTable, Milestone>(table),
-                  BaseReferences<_$VersoDb, $MilestonesTable, Milestone>(db, table, e),
+                  BaseReferences<_$VersoDb, $MilestonesTable, Milestone>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -6519,29 +8165,50 @@ class $$TagsTableFilterComposer extends Composer<_$VersoDb, $TagsTable> {
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get projectId =>
-      $composableBuilder(column: $table.projectId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get projectId => $composableBuilder(
+    column: $table.projectId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get name => $composableBuilder(column: $table.name, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get color => $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$TagsTableOrderingComposer extends Composer<_$VersoDb, $TagsTable> {
@@ -6552,31 +8219,50 @@ class $$TagsTableOrderingComposer extends Composer<_$VersoDb, $TagsTable> {
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get projectId =>
-      $composableBuilder(column: $table.projectId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get projectId => $composableBuilder(
+    column: $table.projectId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get colorCustom =>
-      $composableBuilder(column: $table.colorCustom, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TagsTableAnnotationComposer extends Composer<_$VersoDb, $TagsTable> {
@@ -6587,23 +8273,34 @@ class $$TagsTableAnnotationComposer extends Composer<_$VersoDb, $TagsTable> {
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get projectId => $composableBuilder(column: $table.projectId, builder: (column) => column);
+  GeneratedColumn<String> get projectId =>
+      $composableBuilder(column: $table.projectId, builder: (column) => column);
 
-  GeneratedColumn<String> get name => $composableBuilder(column: $table.name, builder: (column) => column);
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<int> get color => $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<int> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 
-  GeneratedColumn<bool> get colorCustom => $composableBuilder(column: $table.colorCustom, builder: (column) => column);
+  GeneratedColumn<bool> get colorCustom => $composableBuilder(
+    column: $table.colorCustom,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 }
 
 class $$TagsTableTableManager
@@ -6626,9 +8323,12 @@ class $$TagsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$TagsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$TagsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$TagsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$TagsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TagsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TagsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -6679,7 +8379,10 @@ class $$TagsTableTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) => (e.readTable<$TagsTable, Tag>(table), BaseReferences<_$VersoDb, $TagsTable, Tag>(db, table, e)),
+                (e) => (
+                  e.readTable<$TagsTable, Tag>(table),
+                  BaseReferences<_$VersoDb, $TagsTable, Tag>(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: null,
@@ -6722,7 +8425,8 @@ typedef $$FeatureTagsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$FeatureTagsTableFilterComposer extends Composer<_$VersoDb, $FeatureTagsTable> {
+class $$FeatureTagsTableFilterComposer
+    extends Composer<_$VersoDb, $FeatureTagsTable> {
   $$FeatureTagsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -6730,25 +8434,39 @@ class $$FeatureTagsTableFilterComposer extends Composer<_$VersoDb, $FeatureTagsT
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get featureId =>
-      $composableBuilder(column: $table.featureId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get featureId => $composableBuilder(
+    column: $table.featureId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get tagId =>
-      $composableBuilder(column: $table.tagId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get tagId => $composableBuilder(
+    column: $table.tagId,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$FeatureTagsTableOrderingComposer extends Composer<_$VersoDb, $FeatureTagsTable> {
+class $$FeatureTagsTableOrderingComposer
+    extends Composer<_$VersoDb, $FeatureTagsTable> {
   $$FeatureTagsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -6756,25 +8474,39 @@ class $$FeatureTagsTableOrderingComposer extends Composer<_$VersoDb, $FeatureTag
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get featureId =>
-      $composableBuilder(column: $table.featureId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get featureId => $composableBuilder(
+    column: $table.featureId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get tagId =>
-      $composableBuilder(column: $table.tagId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get tagId => $composableBuilder(
+    column: $table.tagId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$FeatureTagsTableAnnotationComposer extends Composer<_$VersoDb, $FeatureTagsTable> {
+class $$FeatureTagsTableAnnotationComposer
+    extends Composer<_$VersoDb, $FeatureTagsTable> {
   $$FeatureTagsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -6782,17 +8514,23 @@ class $$FeatureTagsTableAnnotationComposer extends Composer<_$VersoDb, $FeatureT
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get featureId => $composableBuilder(column: $table.featureId, builder: (column) => column);
+  GeneratedColumn<String> get featureId =>
+      $composableBuilder(column: $table.featureId, builder: (column) => column);
 
-  GeneratedColumn<String> get tagId => $composableBuilder(column: $table.tagId, builder: (column) => column);
+  GeneratedColumn<String> get tagId =>
+      $composableBuilder(column: $table.tagId, builder: (column) => column);
 }
 
 class $$FeatureTagsTableTableManager
@@ -6806,7 +8544,10 @@ class $$FeatureTagsTableTableManager
           $$FeatureTagsTableAnnotationComposer,
           $$FeatureTagsTableCreateCompanionBuilder,
           $$FeatureTagsTableUpdateCompanionBuilder,
-          (FeatureTag, BaseReferences<_$VersoDb, $FeatureTagsTable, FeatureTag>),
+          (
+            FeatureTag,
+            BaseReferences<_$VersoDb, $FeatureTagsTable, FeatureTag>,
+          ),
           FeatureTag,
           PrefetchHooks Function()
         > {
@@ -6815,9 +8556,12 @@ class $$FeatureTagsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$FeatureTagsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$FeatureTagsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$FeatureTagsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$FeatureTagsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FeatureTagsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FeatureTagsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -6858,7 +8602,11 @@ class $$FeatureTagsTableTableManager
               .map(
                 (e) => (
                   e.readTable<$FeatureTagsTable, FeatureTag>(table),
-                  BaseReferences<_$VersoDb, $FeatureTagsTable, FeatureTag>(db, table, e),
+                  BaseReferences<_$VersoDb, $FeatureTagsTable, FeatureTag>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -6910,7 +8658,8 @@ typedef $$AttachmentsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$AttachmentsTableFilterComposer extends Composer<_$VersoDb, $AttachmentsTable> {
+class $$AttachmentsTableFilterComposer
+    extends Composer<_$VersoDb, $AttachmentsTable> {
   $$AttachmentsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -6918,36 +8667,59 @@ class $$AttachmentsTableFilterComposer extends Composer<_$VersoDb, $AttachmentsT
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnFilters(column));
+  ColumnFilters<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get featureId =>
-      $composableBuilder(column: $table.featureId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get featureId => $composableBuilder(
+    column: $table.featureId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get fileName =>
-      $composableBuilder(column: $table.fileName, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get originalName =>
-      $composableBuilder(column: $table.originalName, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get originalName => $composableBuilder(
+    column: $table.originalName,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get width => $composableBuilder(column: $table.width, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get width => $composableBuilder(
+    column: $table.width,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get height =>
-      $composableBuilder(column: $table.height, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get height => $composableBuilder(
+    column: $table.height,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$AttachmentsTableOrderingComposer extends Composer<_$VersoDb, $AttachmentsTable> {
+class $$AttachmentsTableOrderingComposer
+    extends Composer<_$VersoDb, $AttachmentsTable> {
   $$AttachmentsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -6955,37 +8727,59 @@ class $$AttachmentsTableOrderingComposer extends Composer<_$VersoDb, $Attachment
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<bool> get deleted =>
-      $composableBuilder(column: $table.deleted, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<bool> get deleted => $composableBuilder(
+    column: $table.deleted,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get featureId =>
-      $composableBuilder(column: $table.featureId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get featureId => $composableBuilder(
+    column: $table.featureId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get fileName =>
-      $composableBuilder(column: $table.fileName, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get originalName =>
-      $composableBuilder(column: $table.originalName, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get originalName => $composableBuilder(
+    column: $table.originalName,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get width =>
-      $composableBuilder(column: $table.width, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get width => $composableBuilder(
+    column: $table.width,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get height =>
-      $composableBuilder(column: $table.height, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get height => $composableBuilder(
+    column: $table.height,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get sortKey =>
-      $composableBuilder(column: $table.sortKey, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get sortKey => $composableBuilder(
+    column: $table.sortKey,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$AttachmentsTableAnnotationComposer extends Composer<_$VersoDb, $AttachmentsTable> {
+class $$AttachmentsTableAnnotationComposer
+    extends Composer<_$VersoDb, $AttachmentsTable> {
   $$AttachmentsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -6993,26 +8787,37 @@ class $$AttachmentsTableAnnotationComposer extends Composer<_$VersoDb, $Attachme
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<int> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<int> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get deleted => $composableBuilder(column: $table.deleted, builder: (column) => column);
+  GeneratedColumn<bool> get deleted =>
+      $composableBuilder(column: $table.deleted, builder: (column) => column);
 
-  GeneratedColumn<String> get featureId => $composableBuilder(column: $table.featureId, builder: (column) => column);
+  GeneratedColumn<String> get featureId =>
+      $composableBuilder(column: $table.featureId, builder: (column) => column);
 
-  GeneratedColumn<String> get fileName => $composableBuilder(column: $table.fileName, builder: (column) => column);
+  GeneratedColumn<String> get fileName =>
+      $composableBuilder(column: $table.fileName, builder: (column) => column);
 
-  GeneratedColumn<String> get originalName =>
-      $composableBuilder(column: $table.originalName, builder: (column) => column);
+  GeneratedColumn<String> get originalName => $composableBuilder(
+    column: $table.originalName,
+    builder: (column) => column,
+  );
 
-  GeneratedColumn<int> get width => $composableBuilder(column: $table.width, builder: (column) => column);
+  GeneratedColumn<int> get width =>
+      $composableBuilder(column: $table.width, builder: (column) => column);
 
-  GeneratedColumn<int> get height => $composableBuilder(column: $table.height, builder: (column) => column);
+  GeneratedColumn<int> get height =>
+      $composableBuilder(column: $table.height, builder: (column) => column);
 
-  GeneratedColumn<String> get sortKey => $composableBuilder(column: $table.sortKey, builder: (column) => column);
+  GeneratedColumn<String> get sortKey =>
+      $composableBuilder(column: $table.sortKey, builder: (column) => column);
 }
 
 class $$AttachmentsTableTableManager
@@ -7026,7 +8831,10 @@ class $$AttachmentsTableTableManager
           $$AttachmentsTableAnnotationComposer,
           $$AttachmentsTableCreateCompanionBuilder,
           $$AttachmentsTableUpdateCompanionBuilder,
-          (Attachment, BaseReferences<_$VersoDb, $AttachmentsTable, Attachment>),
+          (
+            Attachment,
+            BaseReferences<_$VersoDb, $AttachmentsTable, Attachment>,
+          ),
           Attachment,
           PrefetchHooks Function()
         > {
@@ -7035,9 +8843,12 @@ class $$AttachmentsTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$AttachmentsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$AttachmentsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$AttachmentsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$AttachmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AttachmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AttachmentsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -7094,7 +8905,11 @@ class $$AttachmentsTableTableManager
               .map(
                 (e) => (
                   e.readTable<$AttachmentsTable, Attachment>(table),
-                  BaseReferences<_$VersoDb, $AttachmentsTable, Attachment>(db, table, e),
+                  BaseReferences<_$VersoDb, $AttachmentsTable, Attachment>(
+                    db,
+                    table,
+                    e,
+                  ),
                 ),
               )
               .toList(),
@@ -7121,13 +8936,21 @@ typedef $$AttachmentsTableProcessedTableManager =
 class $VersoDbManager {
   final _$VersoDb _db;
   $VersoDbManager(this._db);
-  $$ProjectsTableTableManager get projects => $$ProjectsTableTableManager(_db, _db.projects);
-  $$EnvironmentsTableTableManager get environments => $$EnvironmentsTableTableManager(_db, _db.environments);
-  $$VersionsTableTableManager get versions => $$VersionsTableTableManager(_db, _db.versions);
-  $$FeaturesTableTableManager get features => $$FeaturesTableTableManager(_db, _db.features);
-  $$SubitemsTableTableManager get subitems => $$SubitemsTableTableManager(_db, _db.subitems);
-  $$MilestonesTableTableManager get milestones => $$MilestonesTableTableManager(_db, _db.milestones);
+  $$ProjectsTableTableManager get projects =>
+      $$ProjectsTableTableManager(_db, _db.projects);
+  $$EnvironmentsTableTableManager get environments =>
+      $$EnvironmentsTableTableManager(_db, _db.environments);
+  $$VersionsTableTableManager get versions =>
+      $$VersionsTableTableManager(_db, _db.versions);
+  $$FeaturesTableTableManager get features =>
+      $$FeaturesTableTableManager(_db, _db.features);
+  $$SubitemsTableTableManager get subitems =>
+      $$SubitemsTableTableManager(_db, _db.subitems);
+  $$MilestonesTableTableManager get milestones =>
+      $$MilestonesTableTableManager(_db, _db.milestones);
   $$TagsTableTableManager get tags => $$TagsTableTableManager(_db, _db.tags);
-  $$FeatureTagsTableTableManager get featureTags => $$FeatureTagsTableTableManager(_db, _db.featureTags);
-  $$AttachmentsTableTableManager get attachments => $$AttachmentsTableTableManager(_db, _db.attachments);
+  $$FeatureTagsTableTableManager get featureTags =>
+      $$FeatureTagsTableTableManager(_db, _db.featureTags);
+  $$AttachmentsTableTableManager get attachments =>
+      $$AttachmentsTableTableManager(_db, _db.attachments);
 }

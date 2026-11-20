@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'dart:io';
 
 import 'package:desktop_drop/desktop_drop.dart';
@@ -36,6 +37,7 @@ class _EnvEditor extends ConsumerStatefulWidget {
 
 class _EnvEditorState extends ConsumerState<_EnvEditor> {
   late final _name = TextEditingController(text: widget.env?.name ?? '');
+  late final _desc = TextEditingController(text: widget.env?.description ?? '');
   late String _icon = widget.env?.icon ?? 'terminal';
   late VColor _color = widget.env == null
       ? const VColor.slot(0)
@@ -45,6 +47,7 @@ class _EnvEditorState extends ConsumerState<_EnvEditor> {
   @override
   void dispose() {
     _name.dispose();
+    _desc.dispose();
     super.dispose();
   }
 
@@ -64,11 +67,9 @@ class _EnvEditorState extends ConsumerState<_EnvEditor> {
     final name = _name.text.trim();
     if (name.isEmpty) return;
     final repo = ref.read(environmentRepoProvider);
-    if (widget.env == null) {
-      await repo.create(name, _icon, _color);
-    } else {
-      await repo.update(widget.env!.id, name: name, icon: _icon, color: _color);
-    }
+    final desc = _desc.text.trim();
+    final id = widget.env?.id ?? await repo.create(name, _icon, _color);
+    await repo.update(id, name: name, icon: _icon, color: _color, description: Value(desc.isEmpty ? null : desc));
     widget.close();
   }
 
@@ -110,6 +111,19 @@ class _EnvEditorState extends ConsumerState<_EnvEditor> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(color: p.text.withValues(alpha: .05), borderRadius: BorderRadius.circular(10)),
+            child: TextField(
+              key: const Key('env-description'),
+              controller: _desc,
+              minLines: 1,
+              maxLines: 4,
+              style: TextStyle(fontFamily: 'Inter', fontSize: 13, color: p.text),
+              decoration: const InputDecoration.collapsed(hintText: 'Description (shown on hover)'),
+            ),
           ),
           const SizedBox(height: 14),
           Text('Icon', style: label),

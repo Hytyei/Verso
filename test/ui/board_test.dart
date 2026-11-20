@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -170,6 +171,8 @@ void main() {
         ids = await seedBasic(db);
         await FeatureRepo(db).create(ids.v1, 'Alpha');
         await FeatureRepo(db).create(ids.v1, 'Beta');
+        // The first task gave v1.0 a start date (AutoDates); the checklist header is what's under test.
+        await VersionRepo(db).update(ids.v1, startDate: const Value(null));
       },
     );
     await t.tap(find.byKey(Key('copy-version-${ids.v1}')));

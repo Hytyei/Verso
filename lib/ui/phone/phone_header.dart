@@ -63,7 +63,22 @@ class PhoneHeader extends ConsumerWidget {
           if (search) ref.read(searchQueryProvider.notifier).set('');
         },
       ),
-      MenuItemSpec('Timeline', icon: Icons.view_timeline_outlined, onTap: () => openPhoneTimeline(context, project)),
+      MenuItemSpec(
+        'Timeline',
+        icon: Icons.view_timeline_outlined,
+        onTap: () {
+          ref.read(settingsProvider.notifier).update((s) => s.copyWith(timelineAll: false));
+          openPhoneTimeline(context, project);
+        },
+      ),
+      MenuItemSpec(
+        'Timeline: all projects',
+        icon: Icons.view_timeline_rounded,
+        onTap: () {
+          ref.read(settingsProvider.notifier).update((s) => s.copyWith(timelineAll: true));
+          openPhoneTimeline(context, project);
+        },
+      ),
       MenuItemSpec('New version', icon: Icons.add_rounded, onTap: onAddVersion),
       const MenuItemSpec.divider(),
       MenuItemSpec(

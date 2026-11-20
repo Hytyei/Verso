@@ -1,3 +1,5 @@
+import '../../state/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/db/database.dart';
@@ -24,12 +26,13 @@ Future<void> openPhoneTimeline(BuildContext context, Project project) {
   );
 }
 
-class _PhoneTimeline extends StatelessWidget {
+class _PhoneTimeline extends ConsumerWidget {
   const _PhoneTimeline({required this.project});
   final Project project;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final all = ref.watch(settingsProvider.select((s) => s.timelineAll));
     final p = VersoPalette.of(context);
     final top = MediaQuery.paddingOf(context).top;
     return Material(
@@ -58,7 +61,7 @@ class _PhoneTimeline extends StatelessWidget {
                     Icon(Icons.arrow_back_rounded, size: 20, color: p.text),
                     const SizedBox(width: 6),
                     Text(
-                      '${project.name} · Timeline',
+                      all ? 'All projects · Timeline' : '${project.name} · Timeline',
                       style: TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w700, color: p.text),
                     ),
                   ],

@@ -18,6 +18,23 @@ class VersionRepo {
           .watch()
           .map(_conceptFirst);
 
+  /// Every live version of every project, in board order within each project.
+  Stream<List<Version>> watchAll() =>
+      (db.select(db.versions)
+            ..where((t) => t.deleted.equals(false))
+            ..orderBy([(t) => OrderingTerm(expression: t.sortKey)]))
+          .watch();
+
+  /// Done/total for every version in one query (the all-projects timeline).
+  Stream<Map<String, Progress>> watchProgressAll() => db
+      .customSelect(
+        'SELECT version_id AS v, COALESCE(SUM(done),0) AS d, COUNT(id) AS t FROM features '
+        'WHERE deleted = 0 GROUP BY version_id',
+        readsFrom: {db.features},
+      )
+      .watch()
+      .map((rows) => {for (final r in rows) r.read<String>('v'): (done: r.read<int>('d'), total: r.read<int>('t'))});
+
   Future<List<Version>> listForProject(String projectId) async => _conceptFirst(
     await (db.select(db.versions)
           ..where((t) => t.projectId.equals(projectId) & t.deleted.equals(false))
@@ -132,6 +149,8 @@ class VersionRepo {
       colorCustom: color == null ? const Value.absent() : Value(color.custom),
       startDate: startDate,
       targetDate: targetDate,
+      // A target date set by hand is the owner's: AutoDates leaves it alone from now on.
+      endAuto: targetDate.present ? const Value(false) : const Value.absent(),
       releasedDate: releasedDate,
       description: description,
     ),

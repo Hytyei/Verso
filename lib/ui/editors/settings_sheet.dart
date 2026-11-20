@@ -110,6 +110,37 @@ class _Settings extends ConsumerWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Show steps on cards',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: p.text,
+                            ),
+                          ),
+                          Text(
+                            'Steps appear under each task without opening it, and can be ticked there.',
+                            style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: p.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Switch.adaptive(
+                      key: const Key('steps-on-cards'),
+                      value: s.stepsOnCards,
+                      activeTrackColor: p.primary,
+                      onChanged: (v) => notifier.update((x) => x.copyWith(stepsOnCards: v)),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 18),
                 Text('Google sign-in', style: label),
                 const SizedBox(height: 4),

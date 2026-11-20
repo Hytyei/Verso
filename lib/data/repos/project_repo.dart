@@ -87,7 +87,14 @@ class ProjectRepo {
     return id;
   });
 
-  Future<void> update(String id, {String? name, VColor? color, bool? archived, bool? paused}) =>
+  Future<void> update(
+    String id, {
+    String? name,
+    VColor? color,
+    bool? archived,
+    bool? paused,
+    Value<String?> description = const Value.absent(),
+  }) =>
       (db.update(db.projects)..where((t) => t.id.equals(id))).write(
         ProjectsCompanion(
           updatedAt: Value(db.now()),
@@ -96,6 +103,7 @@ class ProjectRepo {
           colorCustom: color == null ? const Value.absent() : Value(color.custom),
           archived: archived == null ? const Value.absent() : Value(archived),
           paused: paused == null ? const Value.absent() : Value(paused),
+          description: description,
         ),
       );
 

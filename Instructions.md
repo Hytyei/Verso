@@ -45,11 +45,11 @@ The owner is a single user (Hytyei). The look follows the iOS design language wi
 D:\RandD\Windows Apps\Verso\
   v1.0.0\            first release (frozen)
   v1.1.0\            previous version
-  v1.2.0\            previous version
-  v1.3.0\            CURRENT version: source + git repo + the runner
+  v1.2.0\ … v1.4.0\  previous versions
+  v1.5.0\            CURRENT version: source + git repo + the runner
     verso.exe         ← run this (with the DLLs and data\ beside it; put there by tool\release.ps1)
-    lib\ test\ backend\ docs\ tool\ …
-  releases\          zipped builds: Verso-<version>-windows-x64.zip
+    lib\ test\ backend\ docs\ tool\ android\ …
+  releases\          builds: Verso-<version>-windows-x64.zip and Verso-<version>-android.apk
 %APPDATA%\Verso\     THE database and files, shared by every version (see §5)
 ```
 
@@ -90,6 +90,14 @@ D:\RandD\Windows Apps\Verso\
 - **v1.4.0 (2026-11-10): Android.** The phone app (§8b), GitHub updates (§8c), home-screen widgets (§8d), the sync
   indicator, pinch-to-zoom on the timeline, "Rename…" in the project menu, and the Verso icon on both platforms.
   The repository was recreated as **public** with a fresh history (§9).
+- **v1.5.0 (2026-11-20):**
+  - automatic version dates (start when the first task is added, end when the last one is done);
+  - the full text of cut-off names on hover;
+  - descriptions for apps and environments;
+  - an **all-projects timeline** with a filter;
+  - steps listed on collapsed cards, tickable in place.
+
+  Schema 5. Details in §7.
 - **Not verified yet:** live sync between the phone and the PC. It needs the owner to sign in on both; the Worker
   already accepts the Desktop client the phone uses.
 
@@ -164,14 +172,15 @@ Build-time defines: `--dart-define=GOOGLE_CLIENT_ID=… --dart-define=GOOGLE_CLI
 | `import.log` | results of `VERSO_IMPORT` runs |
 | `verso.sqlite.bak-before-todoist-import` | backup made before the first Todoist import |
 
-### Schema (Drift, `lib/data/db/tables.dart`, schema version 4)
+### Schema (Drift, `lib/data/db/tables.dart`, schema version 5)
 Every table has `id` (UUID v4), `createdAt` and `updatedAt` (UTC epoch ms), and `deleted` (soft delete). Queries never return
 deleted rows. Every write stamps `updatedAt`. Together these make the rows ready for last-write-wins sync.
 
-- `projects`: name, color/colorCustom, icon, sortKey, archived, paused
-- `environments`: name, icon (glyph key or `file:<name>`), color/colorCustom, sortKey
+- `projects`: name, color/colorCustom, icon, sortKey, archived, paused, description?
+- `environments`: name, icon (glyph key or `file:<name>`), color/colorCustom, sortKey, description?
 - `versions`: projectId, environmentId, kind (`concept`/`release`), name, status (`planned`/`active`/`released`),
-  color, startDate, targetDate, releasedDate, description, sortKey
+  color, startDate, targetDate, releasedDate, description, sortKey, endAuto? (true = targetDate was set by AutoDates;
+  nullable so rows from builds older than 1.5.0 still load)
 - `features`: versionId, title, done, doneAt, priority 0–3, color?, notes?, startDate?, endDate?, sortKey,
   delayedFromVersionId?, delayCount
 - `subitems` (steps; `parentId` for nesting), `milestones`, `tags`, `feature_tags` (id = `featureId:tagId`), `attachments`
@@ -180,7 +189,8 @@ deleted rows. Every write stamps `updatedAt`. Together these make the rows ready
 row. `placeKey` always lands strictly after its anchor and before the next greater key. Columns with duplicate
 keys are renumbered automatically. Create and move run in transactions.
 
-**Migrations:** `onUpgrade` in `lib/data/db/database.dart`. v1→v2 added environments, and v2→v3 added `projects.paused`. Each step runs atomically in a transaction.
+**Migrations:** `onUpgrade` in `lib/data/db/database.dart`. v1→v2 added environments, v2→v3 added `projects.paused`,
+v3→v4 `subitems.parentId`, and v4→v5 the two `description` columns and `versions.endAuto`. Each step runs atomically in a transaction.
 After editing tables, run `dart run build_runner build --delete-conflicting-outputs` and bump `schemaVersion` with a migration.
 
 Dates are calendar days stored at UTC midnight. Drift returns them as **local** `DateTime`, so always format and compare
@@ -253,23 +263,41 @@ Lists use `AnimatedEntryList` (enter/exit) plus `Flip` (FLIP moves).
 
 ## 7. Features in detail (current)
 
-- **Projects:** create (in the selected environment), rename (double-click in the sidebar), and from right-click: color, tags, **Move to environment** (moves the project's versions in that folder), pause/resume, delete. All undoable. Progress ring.
+- **Projects:**
+  - create (in the selected environment), rename (double-click in the sidebar);
+  - from right-click: color, tags, **Description…**, Rename…, **Move to environment** (moves the project's versions in that folder), pause/resume, delete;
+  - all undoable; progress ring.
+- **Descriptions and full names (v1.5.0):**
+  - Apps and environments have a description: project menu → Description…, or the environment editor.
+  - Hovering a sidebar name shows the full name and the description; on the phone the description is a second line in the folders sheet.
+  - Every name cut off with "…" shows in full on hover (`OverflowText` in `lib/ui/common/overflow_text.dart`; tooltips appear only when the text is actually cut).
+  - The timeline shows a caption with the full text of cut-off lane labels and task bars.
 - **Concept stage:** always the first column. It cannot be moved or deleted. Its features are "ideas" and don't count toward progress.
 - **Versions:** new ones are named `v0.0.0` first, then the second number bumps (`bumpVersionName` in `lib/data/models.dart`).
   - name, status, dates (start/target), color, description and environment are set via ⋯ on the column header;
+  - **automatic dates** (`lib/data/auto_dates.dart`, run from `FeatureRepo` writes):
+    - The start becomes the day the first task is added.
+    - The end becomes the day the last open task is done; such an end (`endAuto`) is removed again if a task reopens or a new one arrives.
+    - Dates set by hand are never changed. Concept keeps no dates.
+    - Imports go through the same code; pulled sync rows don't.
   - drag a header to reorder;
   - delete with a confirmation and undo.
 - **Features:**
   - **steps** nest to any depth (`subitems.parentId`): "+" on a step adds a sub-step, the drag handle reorders siblings, collapsing shows a count, and deleting removes the subtree (undoable);
+  - **steps show on collapsed cards** (`lib/ui/board/card_steps.dart`): nested, tickable in place, first 6 then "+N more"; Settings → Show steps on cards;
   - add (Enter adds the next one, Shift+Enter makes a newline, Esc cancels), rename inline (double-click or F2), check (pop animation, moves to "Done · n");
   - drag between columns, delay or move via the right-click menu, priority, color, tags, steps, notes, dates, images (drop or Ctrl+V, lightbox).
 - **Timeline:**
   - lanes per version (Concept hatched), feature sub-bars, milestones;
   - drag a bar or its ends to reschedule;
   - double-click a lane to add a dated feature, double-click the milestone row to add a milestone;
-  - Today / Fit / zoom buttons, and an undated tray.
+  - Today / Fit / zoom buttons, and an undated tray;
+  - **This project / All projects** (`Settings.timelineAll`):
+    - all projects' versions, grouped by project, labelled "Project · version" with the environment;
+    - filter button (`lib/ui/timeline/overview_filter.dart`): environments, projects, released versions, paused projects. Stored as what is *hidden*, in `Settings.overview`; logic in `lib/state/overview.dart`;
+    - same editing as one project; the phone has ⋯ → Timeline: all projects.
 - **Environments:** folders, editor (16 glyphs or a custom image, plus color), break-from-here, edge stubs between segments.
-- **Search and filters**, settings (theme, reduce motion, Google client, data folder), and shortcuts:
+- **Search and filters**, settings (theme, reduce motion, steps on cards, Google client, sync server, data folder, updates), and shortcuts:
 
 | Key | Action |
 |---|---|

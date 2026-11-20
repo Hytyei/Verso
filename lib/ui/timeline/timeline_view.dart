@@ -8,17 +8,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/db/database.dart';
+import '../../data/repos/project_repo.dart' show Progress;
 import '../../data/undo.dart';
 import '../../dev/perf_probe.dart';
+import '../../state/overview.dart';
 import '../../state/providers.dart';
 import '../common/format.dart';
 import '../common/glass_menu.dart';
 import '../editors/milestone_editor.dart';
 import '../editors/version_editor.dart';
 import '../glass/glass_surface.dart';
+import '../shell/glass_segmented.dart';
 import '../theme/motion.dart';
 import '../theme/palette.dart';
 import '../board/segment_stub.dart';
+import 'overview_filter.dart';
 import 'timeline_layout.dart';
 import 'timeline_painter.dart';
 import 'timeline_scale.dart';
@@ -45,6 +49,56 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
   Duration _lastTick = Duration.zero;
   final _repaint = ValueNotifier(0);
   HitTarget? _hover;
+  Map<String, String> _laneNames = const {};
+  Map<String, String> _laneDetails = const {};
+  final _caption = ValueNotifier<_Caption?>(null);
+
+  /// The full text to show under the pointer, or null when nothing there is cut off.
+  _Caption? _captionAt(Offset pos, Size size) {
+    final g = _geom;
+    final layout = _layout;
+    if (g == null || layout == null || pos.dy < g.lanesTop) return null;
+    if (pos.dx < TimelineGeometry.labelW - 10) {
+      for (final l in layout.lanes) {
+        final r = g.laneRects[l.version.id];
+        if (r == null || !r.contains(Offset(1, pos.dy))) continue;
+        final name = _laneNames[l.version.id] ?? l.version.name;
+        final detail = _laneDetails[l.version.id];
+        final tp = TextPainter(
+          text: TextSpan(text: name, style: LaneLabelPainter.nameStyle),
+          textDirection: TextDirection.ltr,
+          maxLines: 1,
+        )..layout(maxWidth: LaneLabelPainter.nameWidth(TimelineGeometry.labelW - 10));
+        final cut = tp.didExceedMaxLines;
+        tp.dispose();
+        if (!cut && detail == null) return null;
+        return _Caption(pos, name, detail);
+      }
+      return null;
+    }
+    final h = _hover;
+    if (h == null || h.kind != HitKind.featureBar) return null;
+    for (final l in layout.lanes) {
+      for (final b in l.features) {
+        if (b.feature.id != h.id) continue;
+        final title = b.feature.title.trim();
+        final bar = g.barRects[b.feature.id];
+        final room = bar == null ? 0.0 : math.min(260.0, size.width - bar.right - 6);
+        final tp = TextPainter(
+          text: TextSpan(
+            text: title.split('\n').first,
+            style: const TextStyle(fontFamily: 'Inter', fontSize: 11, fontWeight: FontWeight.w500),
+          ),
+          textDirection: TextDirection.ltr,
+          maxLines: 1,
+        )..layout();
+        final cut = title.contains('\n') || tp.width > room;
+        tp.dispose();
+        return cut ? _Caption(pos, title, null) : null;
+      }
+    }
+    return null;
+  }
 
   // Drag state.
   _DragMode _mode = _DragMode.none;
@@ -88,6 +142,7 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
 
   @override
   void dispose() {
+    _caption.dispose();
     _tickerOrNull?.dispose();
     _repaint.dispose();
     super.dispose();
@@ -387,7 +442,7 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
     switch (hit.kind) {
       case HitKind.milestone:
         final m = _layout!.milestones.firstWhere((m) => m.id == hit.id);
-        await showMilestoneEditor(context, projectId: widget.project.id, pos: g, milestone: m);
+        await showMilestoneEditor(context, projectId: m.projectId, pos: g, milestone: m);
       case HitKind.versionBar || HitKind.barStart || HitKind.barEnd
           when _layout!.lanes.any((l) => l.version.id == hit.id):
         final v = _layout!.lanes.firstWhere((l) => l.version.id == hit.id).version;
@@ -453,29 +508,72 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
   @override
   Widget build(BuildContext context) {
     final p = VersoPalette.of(context);
-    final versions = segmentOf(
-      ref.watch(versionsProvider(widget.project.id)).value ?? const <Version>[],
-      ref.watch(selectedEnvironmentIdProvider),
-    );
+    final all = ref.watch(settingsProvider.select((s) => s.timelineAll));
+    final projects = ref.watch(projectsProvider).value ?? const <Project>[];
+    final envs = {for (final e in ref.watch(environmentsProvider).value ?? const <Environment>[]) e.id: e};
+    final List<Version> versions;
+    if (all) {
+      versions = overviewVersions(
+        projects,
+        ref.watch(allVersionsProvider).value ?? const <Version>[],
+        ref.watch(settingsProvider.select((s) => s.overview)),
+      );
+    } else {
+      versions = segmentOf(
+        ref.watch(versionsProvider(widget.project.id)).value ?? const <Version>[],
+        ref.watch(selectedEnvironmentIdProvider),
+      );
+    }
+    final shown = {for (final v in versions) v.id};
+    final shownProjects = {for (final v in versions) v.projectId};
     final query = ref.watch(searchQueryProvider).trim().toLowerCase();
-    var dated = ref.watch(datedFeaturesProvider(widget.project.id)).value ?? const <Feature>[];
+    var dated = all
+        ? [
+            for (final f in ref.watch(allDatedFeaturesProvider).value ?? const <Feature>[])
+              if (shown.contains(f.versionId)) f,
+          ]
+        : ref.watch(datedFeaturesProvider(widget.project.id)).value ?? const <Feature>[];
     if (query.isNotEmpty) {
       dated = [
         for (final f in dated)
           if (f.title.toLowerCase().contains(query) || (f.notes ?? '').toLowerCase().contains(query)) f,
       ];
     }
-    final milestones = ref.watch(milestonesProvider(widget.project.id)).value ?? const <Milestone>[];
+    final milestones = all
+        ? [
+            for (final m in ref.watch(allMilestonesProvider).value ?? const <Milestone>[])
+              if (shownProjects.contains(m.projectId)) m,
+          ]
+        : ref.watch(milestonesProvider(widget.project.id)).value ?? const <Milestone>[];
     final layout = TimelineLayout.build(versions, dated, milestones);
     _layout = layout;
+    final allProgress = all ? ref.watch(allProgressProvider).value ?? const <String, Progress>{} : null;
     final progress = <String, double>{
       for (final v in versions)
         v.id: (() {
-          final pr = ref.watch(versionProgressProvider(v.id)).value;
+          final pr = allProgress != null ? allProgress[v.id] : ref.watch(versionProgressProvider(v.id)).value;
           return pr == null || pr.total == 0 ? 0.0 : pr.done / pr.total;
         })(),
     };
     final names = {for (final v in versions) v.id: v.name};
+    final projectById = {for (final pr in projects) pr.id: pr};
+    // All projects: "Tandem · v1.2" with the environment in the sub-line.
+    final laneNames = <String, String>{
+      if (all)
+        for (final v in versions) v.id: '${projectById[v.projectId]?.name ?? '?'} · ${v.name}',
+    };
+    final laneSubs = <String, String>{
+      if (all)
+        for (final v in versions)
+          if (envs[v.environmentId] != null) v.id: envs[v.environmentId]!.name,
+    };
+    _laneNames = laneNames;
+    _laneDetails = {
+      if (all)
+        for (final v in versions)
+          if ((projectById[v.projectId]?.description ?? '').trim().isNotEmpty)
+            v.id: projectById[v.projectId]!.description!.trim(),
+    };
 
     return LayoutBuilder(
       builder: (context, c) {
@@ -506,7 +604,9 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
                       _hover = h;
                       _repaint.value++;
                     }
+                    _caption.value = _captionAt(e.localPosition, c.biggest);
                   },
+                  onExit: (_) => _caption.value = null,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     // Hit-test where the pointer went down, not after the slop.
@@ -583,6 +683,8 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
                               ),
                               palette: p,
                               progress: progress,
+                              names: laneNames,
+                              subs: laneSubs,
                             ),
                           ),
                   ),
@@ -604,12 +706,39 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
                 ),
               ),
             ),
+            // Pinned on both sides so the controls wrap onto two rows on a phone.
             Positioned(
+              left: 14,
               right: 14,
               bottom: 14,
-              child: _Controls(state: this, projectId: widget.project.id),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                // A dense backing: the controls float over bar labels, which would show through the glass.
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: (p.isDark ? const Color(0xFF15120F) : const Color(0xFFF4F6FB)).withValues(alpha: .86),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [BoxShadow(color: p.shadow, blurRadius: 18, offset: const Offset(0, 6))],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: _Controls(state: this, projectId: widget.project.id, all: all),
+                  ),
+                ),
+              ),
             ),
-            if (layout.undated.isNotEmpty)
+            // Full text of a cut-off lane label or task bar under the pointer.
+            ValueListenableBuilder<_Caption?>(
+              valueListenable: _caption,
+              builder: (context, cap, _) => cap == null
+                  ? const SizedBox.shrink()
+                  : Positioned(
+                      left: (cap.at.dx + 14).clamp(0, math.max(0, c.maxWidth - 340)).toDouble(),
+                      top: cap.at.dy + 18,
+                      child: IgnorePointer(child: _CaptionBox(cap)),
+                    ),
+            ),
+            if (layout.undated.isNotEmpty && !all)
               Positioned(
                 left: TimelineGeometry.labelW + 4,
                 bottom: 14,
@@ -637,13 +766,14 @@ class TimelineViewState extends ConsumerState<TimelineView> with SingleTickerPro
   }
 }
 
-class _Controls extends StatelessWidget {
-  const _Controls({required this.state, required this.projectId});
+class _Controls extends ConsumerWidget {
+  const _Controls({required this.state, required this.projectId, required this.all});
   final TimelineViewState state;
   final String projectId;
+  final bool all;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final p = VersoPalette.of(context);
     Widget btn(Key key, IconData icon, String tip, VoidCallback onTap) => Tooltip(
       message: tip,
@@ -656,22 +786,51 @@ class _Controls extends StatelessWidget {
         child: Icon(icon, size: 18, color: p.text),
       ),
     );
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    final filterActive = ref.watch(settingsProvider.select((s) => s.overview.isActive));
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.end,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
+        GlassSegmented<bool>(
+          key: const Key('timeline-scope'),
+          segmentWidth: 108,
+          items: const [(false, 'This project'), (true, 'All projects')],
+          value: all,
+          onChanged: (v) {
+            ref.read(settingsProvider.notifier).update((s) => s.copyWith(timelineAll: v));
+            // Frame the new set of lanes once it is laid out.
+            WidgetsBinding.instance.addPostFrameCallback((_) => state.fit());
+          },
+        ),
+        if (all)
+          Builder(
+            builder: (c) => Tooltip(
+              message: 'Filter projects and environments',
+              child: GlassSurface(
+                key: const Key('timeline-filter'),
+                interactive: true,
+                radius: 999,
+                tint: filterActive ? p.primary.withValues(alpha: .18) : null,
+                onTap: () {
+                  final box = c.findRenderObject() as RenderBox;
+                  showOverviewFilter(c, box.localToGlobal(Offset.zero) & box.size);
+                },
+                padding: const EdgeInsets.all(9),
+                child: Icon(Icons.filter_list_rounded, size: 18, color: filterActive ? p.primary : p.text),
+              ),
+            ),
+          ),
         Builder(
           builder: (c) => btn(const Key('timeline-add-milestone'), Icons.flag_rounded, 'Add milestone', () {
             final box = c.findRenderObject() as RenderBox;
             showMilestoneEditor(c, projectId: projectId, pos: box.localToGlobal(const Offset(-300, -360)));
           }),
         ),
-        const SizedBox(width: 8),
-        btn(const Key('timeline-fit'), Icons.fit_screen_rounded, 'Fit project', state.fit),
-        const SizedBox(width: 8),
+        btn(const Key('timeline-fit'), Icons.fit_screen_rounded, all ? 'Fit everything' : 'Fit project', state.fit),
         btn(const Key('timeline-today'), Icons.today_rounded, 'Today', state.today),
-        const SizedBox(width: 8),
         btn(const Key('timeline-zoom-out'), Icons.remove_rounded, 'Zoom out (Ctrl+wheel)', () => state.zoom(1 / 1.6)),
-        const SizedBox(width: 8),
         btn(const Key('timeline-zoom-in'), Icons.add_rounded, 'Zoom in (Ctrl+wheel)', () => state.zoom(1.6)),
       ],
     );
@@ -719,6 +878,52 @@ class _UndatedTray extends ConsumerWidget {
                 ),
               ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Caption {
+  const _Caption(this.at, this.text, this.detail);
+  final Offset at;
+  final String text;
+  final String? detail;
+}
+
+class _CaptionBox extends StatelessWidget {
+  const _CaptionBox(this.cap);
+  final _Caption cap;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = VersoPalette.of(context);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 320),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: p.isDark ? const Color(0xF21E1A16) : const Color(0xF2FFFFFF),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: p.separator.withValues(alpha: .7)),
+          boxShadow: [BoxShadow(color: p.shadow, blurRadius: 14, offset: const Offset(0, 6))],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cap.text,
+                key: const Key('timeline-caption'),
+                style: TextStyle(fontFamily: 'Inter', fontSize: 12.5, fontWeight: FontWeight.w600, color: p.text),
+              ),
+              if (cap.detail != null) ...[
+                const SizedBox(height: 3),
+                Text(cap.detail!, style: TextStyle(fontFamily: 'Inter', fontSize: 12, color: p.textSecondary)),
+              ],
+            ],
+          ),
         ),
       ),
     );

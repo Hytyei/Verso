@@ -122,6 +122,8 @@ void main() {
     test('undated version with dated features still gets a lane', () async {
       final v = await VersionRepo(db).create(p, 'v1');
       await FeatureRepo(db).create(v, 'A', startDate: DateTime.utc(2026, 2, 1), endDate: DateTime.utc(2026, 2, 5));
+      // Adding a task starts the version (AutoDates); this test is about a version without dates.
+      await VersionRepo(db).update(v, startDate: const Value(null));
       final r = await layout();
       final lane = r.lanes.single;
       expect(lane.range, isNull);
