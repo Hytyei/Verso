@@ -45,8 +45,8 @@ The owner is a single user (Hytyei). The look follows the iOS design language wi
 D:\RandD\Windows Apps\Verso\
   v1.0.0\            first release (frozen)
   v1.1.0\            previous version
-  v1.2.0\ … v1.4.0\  previous versions
-  v1.5.0\            CURRENT version: source + git repo + the runner
+  v1.2.0\ … v1.5.0\  previous versions
+  v1.6.0\            CURRENT version: source + git repo + the runner
     verso.exe         ← run this (with the DLLs and data\ beside it; put there by tool\release.ps1)
     lib\ test\ backend\ docs\ tool\ android\ …
   releases\          builds: Verso-<version>-windows-x64.zip and Verso-<version>-android.apk
@@ -98,6 +98,8 @@ D:\RandD\Windows Apps\Verso\
   - steps listed on collapsed cards, tickable in place.
 
   Schema 5. Details in §7.
+- **v1.6.0 (2026-11-20):** the update banner also shows on a phone with no projects yet (before, only version pages had it).
+  The updater was checked end to end on the emulator up to Android's "Install unknown apps" switch: 1.4.0 found 1.5.0.
 - **Not verified yet:** live sync between the phone and the PC. It needs the owner to sign in on both; the Worker
   already accepts the Desktop client the phone uses.
 
@@ -429,11 +431,6 @@ Lists use `AnimatedEntryList` (enter/exit) plus `Flip` (FLIP moves).
 - The exe is not code-signed, so Windows SmartScreen shows "More info → Run anyway".
 
 ## 10. Known limitations and deferred items (from the final review)
-
-- **Update banner on an empty phone:** the phone shows the update banner only on version pages. On a fresh install with no
-  projects ("Track your first app"), the update appears only in Settings → Check for updates. Fix: also place `UpdateBanner`
-  in `_Empty` in `lib/ui/phone/phone_shell.dart`. Verified on the emulator, 2026-11-20: 1.4.0 found 1.5.0, and Update opened
-  Android's "Install unknown apps" switch. The download and install after that switch were not run.
 
 - **Timeline:**
   - no edge stubs to other environment segments (the board has them);

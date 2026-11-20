@@ -36,7 +36,20 @@ class PhoneShell extends ConsumerWidget {
       child: projects == null
           ? const SizedBox.expand()
           : project == null
-          ? _Empty(onFolders: () => showFoldersSheet(context, onOpenSettings: onOpenSettings))
+          // No projects yet: the update banner still shows (v1.6.0; before, only version pages had it).
+          ? Stack(
+              children: [
+                Positioned.fill(
+                  child: _Empty(onFolders: () => showFoldersSheet(context, onOpenSettings: onOpenSettings)),
+                ),
+                Positioned(
+                  top: MediaQuery.paddingOf(context).top + 12,
+                  left: 12,
+                  right: 12,
+                  child: const Center(child: UpdateBanner()),
+                ),
+              ],
+            )
           : _ProjectPager(key: ValueKey('pager-${project.id}'), project: project, onOpenSettings: onOpenSettings),
     );
   }
