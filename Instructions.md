@@ -430,6 +430,11 @@ Lists use `AnimatedEntryList` (enter/exit) plus `Flip` (FLIP moves).
 
 ## 10. Known limitations and deferred items (from the final review)
 
+- **Update banner on an empty phone:** the phone shows the update banner only on version pages. On a fresh install with no
+  projects ("Track your first app"), the update appears only in Settings → Check for updates. Fix: also place `UpdateBanner`
+  in `_Empty` in `lib/ui/phone/phone_shell.dart`. Verified on the emulator, 2026-11-20: 1.4.0 found 1.5.0, and Update opened
+  Android's "Install unknown apps" switch. The download and install after that switch were not run.
+
 - **Timeline:**
   - no edge stubs to other environment segments (the board has them);
   - an A, B, A environment pattern shows no hint of the middle segment;
